@@ -122,6 +122,14 @@ body::before {
 .game-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 28px 0 18px; }
 .game-stats span { display: grid; gap: 7px; padding: 12px; border: 1px solid var(--line); color: #697492; text-transform: uppercase; font-size: 9px; }
 .game-stats b { color: var(--teal); font-size: 13px; font-weight: 500; }
+.game-controls { display: grid; grid-template-columns: repeat(3, 38px); grid-template-areas: ". up ." "left down right"; justify-content: center; gap: 6px; margin: 0 0 16px; }
+.game-controls button { display: grid; place-items: center; width: 38px; height: 34px; border: 1px solid #354064; background: #080d25; color: #dce0ef; cursor: pointer; font: 15px var(--font-mono); transition: border-color .2s, background .2s, color .2s; }
+.game-controls button:nth-child(1) { grid-area: up; }
+.game-controls button:nth-child(2) { grid-area: left; }
+.game-controls button:nth-child(3) { grid-area: down; }
+.game-controls button:nth-child(4) { grid-area: right; }
+.game-controls button:hover:not(:disabled), .game-controls button:focus-visible { border-color: var(--teal); background: rgba(55,229,195,.1); color: var(--teal); }
+.game-controls button:disabled { cursor: not-allowed; opacity: .35; }
 
 .skill-marquee { overflow: hidden; border-block: 1px solid var(--line); background: #070c23; transform: rotate(-1deg) scale(1.02); }
 .marquee-track { width: max-content; display: flex; animation: drift 30s linear infinite; will-change: transform; }
@@ -258,12 +266,19 @@ body::before {
 .contact-form-panel input, .contact-form-panel textarea { width: 100%; margin-top: 8px; border: 1px solid #2c375d; border-radius: 4px; outline: 0; background: #05091d; color: #dce0ef; padding: 11px 12px; resize: vertical; font: 11px/1.55 var(--font-mono); transition: border-color .2s, box-shadow .2s; }
 .contact-form-panel input:focus, .contact-form-panel textarea:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(139,92,246,.1); }
 .form-honeypot { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip-path: inset(50%) !important; white-space: nowrap !important; }
-.form-submit-target { position: absolute; width: 1px; height: 1px; border: 0; opacity: 0; pointer-events: none; }
 .contact-form-panel .button { min-height: 40px; margin-top: 2px; }
 .form-status { margin: 0; font: 9px var(--font-mono); }
 .form-status.error { color: #ff8b8b; }
 .form-status.success { color: var(--teal); }
 .form-status a { text-decoration: underline; text-underline-offset: 4px; }
+.form-toast { position: fixed; z-index: 100; top: 24px; right: 24px; display: grid; grid-template-columns: 30px minmax(0, 1fr) 24px; align-items: center; gap: 10px; width: min(390px, calc(100vw - 32px)); padding: 14px 16px; border: 1px solid #384467; background: rgba(5, 9, 29, .96); color: #dce0ef; box-shadow: 0 18px 55px rgba(0, 0, 0, .42); backdrop-filter: blur(14px); animation: toast-in .28s ease both; }
+.form-toast > span { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid currentColor; color: var(--teal); font: 700 14px var(--font-mono); }
+.form-toast p { margin: 0; font: 10px/1.55 var(--font-mono); }
+.form-toast p a { color: inherit; text-decoration: underline; }
+.form-toast button { border: 0; background: transparent; color: #8e98b6; cursor: pointer; font: 18px/1 var(--font-mono); }
+.form-toast.error, .form-toast.failed { border-color: rgba(255, 139, 139, .6); }
+.form-toast.error > span, .form-toast.failed > span { color: #ff8b8b; }
+@keyframes toast-in { from { opacity: 0; transform: translate3d(0, -12px, 0); } to { opacity: 1; transform: translate3d(0, 0, 0); } }
 .contact-preview { min-width: 0; }
 .contact-code { padding: 36px 30px; }
 .contact-code a { color: #d9b8d8; text-decoration: underline; text-underline-offset: 4px; }
@@ -401,6 +416,7 @@ body::before {
   .project-title-row h3 { font-size: 22px; }
   .contact-code { padding: 25px 16px; font-size: 7.5px; }
   .contact-form-panel .button { width: 100%; }
+  .form-toast { top: 12px; right: 12px; left: 12px; width: auto; }
   .mobile-menu-socials { flex-wrap: wrap; }
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 const emptyForm = { name: "", email: "", subject: "", message: "" };
 const formEndpoint = "https://formsubmit.co/nguyendragon2000@gmail.com";
@@ -9,8 +9,21 @@ export default function ContactWorkspace() {
   const [form, setForm] = useState(emptyForm);
   const [website, setWebsite] = useState("");
   const [status, setStatus] = useState<"idle" | "error" | "sending" | "success" | "failed">("idle");
-  const [submissionStarted, setSubmissionStarted] = useState(false);
-  const submissionTimeout = useRef<number | null>(null);
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("contact") !== "sent") return;
+
+    window.history.replaceState({}, "", `${url.pathname}#contact`);
+    const showSuccess = window.setTimeout(() => setStatus("success"), 0);
+    return () => window.clearTimeout(showSuccess);
+  }, []);
+
+  useEffect(() => {
+    if (status !== "success" && status !== "error" && status !== "failed") return;
+    const dismissToast = window.setTimeout(() => setStatus("idle"), 4500);
+    return () => window.clearTimeout(dismissToast);
+  }, [status]);
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     const valid = form.name.trim() && /^\S+@\S+\.\S+$/.test(form.email) && form.message.trim();
@@ -27,21 +40,6 @@ export default function ContactWorkspace() {
     }
 
     setStatus("sending");
-    setSubmissionStarted(true);
-    if (submissionTimeout.current) window.clearTimeout(submissionTimeout.current);
-    submissionTimeout.current = window.setTimeout(() => {
-      setStatus("failed");
-      setSubmissionStarted(false);
-    }, 15000);
-  };
-
-  const completeSubmission = () => {
-    if (!submissionStarted) return;
-    if (submissionTimeout.current) window.clearTimeout(submissionTimeout.current);
-    submissionTimeout.current = null;
-    setSubmissionStarted(false);
-    setStatus("success");
-    setForm(emptyForm);
   };
 
   return (
@@ -54,11 +52,10 @@ export default function ContactWorkspace() {
         <a href="https://github.com/ThaiNguyen2k" target="_blank" rel="noreferrer">↗ GitHub</a>
       </aside>
 
-      <form className="contact-form-panel" action={formEndpoint} method="POST" target="contact-submit-target" onSubmit={submit} noValidate>
+      <form className="contact-form-panel" action={formEndpoint} method="POST" onSubmit={submit} noValidate>
         <input type="hidden" name="_subject" value={`[Nomo Portfolio] ${form.subject.trim() || "New message"}`} />
         <input type="hidden" name="_template" value="table" />
-        <input type="hidden" name="_captcha" value="false" />
-        <input type="hidden" name="_next" value="https://thainguyen2k.github.io/nomo-portfolio/#contact" />
+        <input type="hidden" name="_next" value="https://thainguyen2k.github.io/nomo-portfolio/?contact=sent#contact" />
         <input type="hidden" name="_url" value="https://thainguyen2k.github.io/nomo-portfolio/#contact" />
         <label className="form-honeypot" aria-hidden="true">website:<input name="_honey" value={website} onChange={(event) => setWebsite(event.target.value)} tabIndex={-1} autoComplete="off" /></label>
         <label>_name:<input name="name" value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} placeholder="Nguyen Van A" /></label>
@@ -66,11 +63,19 @@ export default function ContactWorkspace() {
         <label>_subject:<input name="subject" value={form.subject} onChange={(event) => setForm({ ...form, subject: event.target.value })} placeholder="Frontend opportunity" /></label>
         <label>_message:<textarea name="message" rows={6} value={form.message} onChange={(event) => setForm({ ...form, message: event.target.value })} placeholder="Tell me about the product, team, or challenge..." /></label>
         <button className="button button-primary" type="submit" disabled={status === "sending"}>{status === "sending" ? "sending..." : "send-message"} <span aria-hidden="true">→</span></button>
-        {status === "error" && <p className="form-status error">Please add your name, a valid email, and a message.</p>}
-        {status === "success" && <p className="form-status success">Message sent successfully. Thank you!</p>}
-        {status === "failed" && <p className="form-status error">Could not send right now. Please email me directly at <a href="mailto:nguyendragon2000@gmail.com">nguyendragon2000@gmail.com</a>.</p>}
       </form>
-      <iframe className="form-submit-target" name="contact-submit-target" title="Contact form response" onLoad={completeSubmission} />
+
+      {(status === "error" || status === "success" || status === "failed") && (
+        <div className={`form-toast ${status}`} role={status === "success" ? "status" : "alert"} aria-live="polite">
+          <span aria-hidden="true">{status === "success" ? "✓" : "!"}</span>
+          <p>
+            {status === "error" && "Please add your name, a valid email, and a message."}
+            {status === "success" && "Message sent successfully. Thank you!"}
+            {status === "failed" && <>Could not send. Email me at <a href="mailto:nguyendragon2000@gmail.com">nguyendragon2000@gmail.com</a>.</>}
+          </p>
+          <button type="button" onClick={() => setStatus("idle")} aria-label="Close notification">×</button>
+        </div>
+      )}
 
       <div className="contact-preview" aria-live="polite">
         <div className="window-bar"><div className="window-dots"><i /><i /><i /></div><span>message.preview.js</span><span>{status}</span></div>

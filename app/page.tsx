@@ -204,6 +204,11 @@ export default function Home() {
         <div className="experience-grid">
           <div className="timeline">
             <article className="timeline-item active">
+              <div className="timeline-date">Jul 2026 - Present</div>
+              <div><span>Freelance</span><h3>Full-stack Developer</h3><p>Independent Projects</p></div>
+              <p>Built GFT Career Connect AI and NutriVision AI end to end—from product flows and responsive UI to APIs, databases, authentication, AI integrations, automated tests, and production deployment.</p>
+            </article>
+            <article className="timeline-item">
               <div className="timeline-date">Dec 2025 - Jun 2026</div>
               <div><span>Freelance</span><h3>Frontend Developer</h3><p>Amoeba Co., Ltd</p></div>
               <p>Continued delivery for Andar, building interactive storefront UI, seasonal campaign pages, responsive product journeys, and performance improvements.</p>
