@@ -303,7 +303,7 @@ body::before {
 .not-found-page { min-height: 100vh; display: grid; place-items: center; position: relative; overflow: hidden; background: radial-gradient(circle at 28% 48%, rgba(55,229,195,.1), transparent 26%), var(--ink); }
 .not-found-grid { position: absolute; inset: 0; opacity: .07; background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 30px 30px; }
 .not-found-code { width: min(900px, calc(100% - 40px)); display: grid; grid-template-columns: .7fr 1.3fr; align-items: center; gap: 55px; position: relative; z-index: 2; }
-.not-found-code > span { color: transparent; -webkit-text-stroke: 2px rgba(189,167,255,.65); font: 700 clamp(130px, 23vw, 300px)/1 var(--font-mono); letter-spacing: -.13em; }
+.not-found-code > span { justify-self: center; color: transparent; -webkit-text-stroke: 2px rgba(189,167,255,.72); font-family: var(--font-mono); font-size: clamp(170px, 21vw, 300px); font-weight: 700; line-height: .82; letter-spacing: -.13em; white-space: nowrap; filter: drop-shadow(0 0 24px rgba(139,92,246,.16)); }
 .not-found-code > div { padding: 34px; border: 1px solid var(--line); background: rgba(9,15,40,.92); box-shadow: 20px 22px 0 rgba(2,5,18,.7); font: 11px/2 var(--font-mono); }
 .not-found-code p { margin: 0; color: #a8b0c8; }
 .not-found-code p b { color: #4f5a79; font-weight: 400; margin-right: 8px; }
