@@ -33,7 +33,10 @@ test("server-renders the complete Nomo portfolio", async () => {
   assert.match(html, /aria-label="Open navigation"/i);
   assert.match(html, /Interactive snake mini game/i);
   assert.match(html, /arrow keys or WASD to steer/i);
+  assert.match(html, /random nodes · speed increases/i);
   assert.match(html, /Move up/i);
+  assert.ok(html.indexOf('class="contact-section"') < html.indexOf('class="section-shell terminal-game"'));
+  assert.ok(html.indexOf('class="section-shell terminal-game"') < html.indexOf('class="site-footer"'));
   assert.equal((html.match(/class="marquee-group"/g) ?? []).length, 2);
   assert.match(html, /Code with purpose\./i);
   assert.match(html, /GFT Career Connect AI/i);
@@ -44,7 +47,8 @@ test("server-renders the complete Nomo portfolio", async () => {
   assert.match(html, /send-message/i);
   assert.match(html, /formsubmit\.co\/nguyendragon2000@gmail\.com/i);
   assert.match(html, /\?contact=sent#contact/i);
-  assert.doesNotMatch(html, /contact-submit-target/i);
+  assert.match(html, /contact-verification-frame/i);
+  assert.match(html, /Complete the contact form CAPTCHA/i);
   assert.doesNotMatch(html, /name="_captcha" value="false"/i);
   assert.match(html, /Nguyen Thai Nguyen \/ Nomo/i);
 });

@@ -94,8 +94,6 @@ export default function Home() {
         </div>
       </section>
 
-      <TerminalGame />
-
       <div className="skill-marquee" aria-label="Core technologies">
         <div className="marquee-track">
           {[0, 1].map((cycle) => (
@@ -237,6 +235,8 @@ export default function Home() {
           <ContactWorkspace />
         </div>
       </section>
+
+      <TerminalGame />
 
       <footer className="site-footer">
         <div className="footer-socials">
