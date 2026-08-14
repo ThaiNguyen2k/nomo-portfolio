@@ -1,73 +1,7 @@
-const projects = [
-  {
-    id: "01",
-    slug: "career-ai",
-    name: "GFT Career Connect AI",
-    period: "Jul - Aug 2026",
-    category: "AI support automation platform",
-    description:
-      "A bilingual, multi-role support platform with controlled AI triage, knowledge retrieval, confidence gating, human handoff, audit history, and real-data dashboards.",
-    stack: ["React 19", "TypeScript", "Cloudflare D1", "Drizzle ORM"],
-    live: "https://gft-career-connect-ai.nguyendragon2000.workers.dev/",
-    github: "https://github.com/ThaiNguyen2k/gft-career-connect-ai",
-    featured: true,
-  },
-  {
-    id: "02",
-    slug: "nutrivision",
-    name: "NutriVision AI",
-    period: "Aug 2026",
-    category: "Mobile nutrition intelligence",
-    description:
-      "A full-stack Expo, React, and FastAPI product for meal analysis, food logging, weight tracking, and source-aware nutrition insights across daily, 7-day, and 30-day views.",
-    stack: ["Expo", "React", "FastAPI", "PostgreSQL"],
-    featured: true,
-  },
-  {
-    id: "03",
-    slug: "andar",
-    name: "Andar E-commerce",
-    period: "Apr 2025 - Jun 2026",
-    category: "Fashion commerce experience",
-    description:
-      "Production product and campaign pages built from PSD concepts, with responsive merchandising UI, galleries, sticky CTAs, variant interactions, and seasonal releases.",
-    stack: ["Cafe24", "JavaScript", "SCSS", "Photoshop"],
-    live: "https://andar01.cafe24.com/",
-  },
-  {
-    id: "04",
-    slug: "arria",
-    name: "Arria USA",
-    period: "Sep 2024 - Apr 2025",
-    category: "Commerce & operations website",
-    description:
-      "A responsive Odoo and React storefront translated from Figma, including dynamic contact flows, checkout and payment journeys, validation, and spam prevention.",
-    stack: ["Odoo", "React", "JavaScript", "SCSS"],
-    live: "https://arriausa.com/",
-  },
-  {
-    id: "05",
-    slug: "gvmarket",
-    name: "GV Market",
-    period: "Aug 2024 - May 2025",
-    category: "Multi-page e-commerce website",
-    description:
-      "Responsive home, listing, detail, about, and contact experiences with reusable product cards, category sections, filtering UI, and promotional layouts.",
-    stack: ["React", "JavaScript", "HTML5", "CSS3"],
-    live: "https://gvmarket.vn/",
-  },
-  {
-    id: "06",
-    slug: "erpia",
-    name: "Erpia Corporate",
-    period: "Dec 2023 - Mar 2024",
-    category: "Corporate digital presence",
-    description:
-      "A responsive corporate website with reusable React components, scalable layout patterns, performance refinements, and cross-device UI delivery.",
-    stack: ["React", "JavaScript", "HTML5", "SCSS"],
-    live: "https://erpia.net/",
-  },
-];
+import ContactWorkspace from "./components/ContactWorkspace";
+import MobileNav from "./components/MobileNav";
+import ProjectGallery from "./components/ProjectGallery";
+import TerminalGame from "./components/TerminalGame";
 
 const skillGroups = [
   {
@@ -110,6 +44,7 @@ export default function Home() {
         <a className="header-contact" href="#contact">
           _contact-me <span aria-hidden="true">↗</span>
         </a>
+        <MobileNav />
       </header>
 
       <section className="hero section-shell" id="home">
@@ -159,6 +94,8 @@ export default function Home() {
         </div>
       </section>
 
+      <TerminalGame />
+
       <div className="skill-marquee" aria-label="Core technologies">
         <div>
           {marqueeSkills.map((skill) => <span key={skill}>{skill} <i>+</i></span>)}
@@ -182,6 +119,42 @@ export default function Home() {
             <article><strong>03<span>yr</span></strong><p>professional experience</p></article>
             <article><strong>12</strong><p>routes shipped in GFT Career AI</p></article>
             <article><strong>64<span>/64</span></strong><p>verified unit tests</p></article>
+          </div>
+        </div>
+
+        <div className="about-console">
+          <div className="window-bar"><div className="window-dots"><i /><i /><i /></div><span>about.workspace</span><span>3 files</span></div>
+          <div className="about-console-body">
+            <aside className="about-explorer">
+              <p># personal-info</p>
+              <details open><summary>▾ bio</summary><span>profile.md</span><span>experience.json</span></details>
+              <details open><summary>▾ education</summary><span>can-tho-university</span><span>kits-fullstack-java</span></details>
+              <details><summary>▸ interests</summary><span>product-ui</span><span>ai-engineering</span></details>
+              <p># contacts</p>
+              <a href="mailto:nguyendragon2000@gmail.com">email.config</a>
+              <a href="https://github.com/ThaiNguyen2k" target="_blank" rel="noreferrer">github.link</a>
+            </aside>
+            <div className="about-source">
+              <div className="source-tab">profile.md <span>×</span></div>
+              <div className="source-lines">
+                <p><b>01</b> {"/**"}</p>
+                <p><b>02</b> * Frontend-focused engineer with nearly 3 years</p>
+                <p><b>03</b> * of production experience across commerce,</p>
+                <p><b>04</b> * business systems, mobile, cloud, and AI products.</p>
+                <p><b>05</b> *</p>
+                <p><b>06</b> * I translate Figma and PSD designs into</p>
+                <p><b>07</b> * responsive, maintainable React interfaces.</p>
+                <p><b>08</b> *</p>
+                <p><b>09</b> * Current focus: TypeScript, FastAPI, Workers,</p>
+                <p><b>10</b> * PostgreSQL/D1, tested AI-assisted delivery.</p>
+                <p><b>11</b> */</p>
+              </div>
+            </div>
+            <div className="code-showcase">
+              <p>{"//"} code snippet showcase:</p>
+              <article><span>GFT Career Connect AI</span><pre><code><em>const</em> pipeline = [<br />  &quot;triage&quot;, &quot;retrieval&quot;,<br />  &quot;confidence-gate&quot;,<br />  &quot;human-handoff&quot;<br />];</code></pre><small>64/64 tests · Cloudflare</small></article>
+              <article><span>NutriVision AI</span><pre><code><em>type</em> Stack = &#123;<br />  mobile: &quot;Expo&quot;,<br />  api: &quot;FastAPI&quot;,<br />  db: &quot;PostgreSQL&quot;<br />&#125;;</code></pre><small>full-stack · private repository</small></article>
+            </div>
           </div>
         </div>
 
@@ -215,37 +188,7 @@ export default function Home() {
             <p className="section-note">A selection of AI, commerce, and business products I am building and have delivered.</p>
           </div>
 
-          <div className="projects-grid">
-            {projects.map((project) => (
-              <article className={`project-card ${project.featured ? "project-featured" : ""}`} key={project.name}>
-                <div className={`project-visual visual-${project.slug}`}>
-                  <div className="project-visual-top"><span>{project.id} / 06</span><span>{project.period}</span></div>
-                  <div className="project-mock" aria-hidden="true">
-                    <span className="mock-side" />
-                    <span className="mock-line wide" />
-                    <span className="mock-line mid" />
-                    <span className="mock-card a" />
-                    <span className="mock-card b" />
-                    <span className="mock-dot" />
-                  </div>
-                  <p>{project.category}</p>
-                </div>
-                <div className="project-body">
-                  <div className="project-title-row">
-                    <div><span>Project {project.id} {"//"}</span><h3>{project.name}</h3></div>
-                    <span className="project-arrow" aria-hidden="true">↗</span>
-                  </div>
-                  <p>{project.description}</p>
-                  <div className="tags">{project.stack.map((tag) => <span key={tag}>{tag}</span>)}</div>
-                  <div className="project-links">
-                    {project.live && <a href={project.live} target="_blank" rel="noreferrer">Live project <span aria-hidden="true">↗</span></a>}
-                    {project.github && <a href={project.github} target="_blank" rel="noreferrer">Source code <span aria-hidden="true">↗</span></a>}
-                    {!project.live && !project.github && <span className="private-label">Private repository</span>}
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+          <ProjectGallery />
         </div>
       </section>
 
@@ -276,32 +219,23 @@ export default function Home() {
       </section>
 
       <section className="contact-section" id="contact">
-        <div className="section-shell contact-inner">
+        <div className="section-shell">
           <div className="contact-copy">
             <p className="eyebrow">04. / contact-me</p>
             <h2>Have a product in mind?<br /><span>Let&apos;s make it real.</span></h2>
             <p>I am open to frontend roles and thoughtful product collaborations. Tell me about the challenge, the team, or the interface you want to bring to life.</p>
-            <a className="button button-primary" href="mailto:nguyendragon2000@gmail.com?subject=Let&apos;s%20work%20together">Start a conversation <span aria-hidden="true">→</span></a>
           </div>
-          <div className="contact-terminal">
-            <div className="window-bar"><div className="window-dots"><i /><i /><i /></div><span>contact.config.js</span><span>ready</span></div>
-            <div className="contact-code">
-              <p><b>01</b> <em>const</em> contact = &#123;</p>
-              <p><b>02</b> &nbsp;email: <a href="mailto:nguyendragon2000@gmail.com">&quot;nguyendragon2000@gmail.com&quot;</a>,</p>
-              <p><b>03</b> &nbsp;phone: <a href="tel:+84939205421">&quot;+84 939 205 421&quot;</a>,</p>
-              <p><b>04</b> &nbsp;github: <a href="https://github.com/ThaiNguyen2k" target="_blank" rel="noreferrer">&quot;@ThaiNguyen2k&quot;</a>,</p>
-              <p><b>05</b> &nbsp;location: <strong>&quot;Ho Chi Minh City&quot;</strong>,</p>
-              <p><b>06</b> &nbsp;available: <span>true</span></p>
-              <p><b>07</b> &#125;;</p>
-            </div>
-            <div className="terminal-status"><span>● online</span><span>Response time: &lt; 24h</span></div>
-          </div>
+          <ContactWorkspace />
         </div>
       </section>
 
       <footer className="site-footer">
+        <div className="footer-socials">
+          <span>find me in:</span>
+          <a href="https://github.com/ThaiNguyen2k" target="_blank" rel="noreferrer">GitHub ↗</a>
+          <a href="mailto:nguyendragon2000@gmail.com">Email ↗</a>
+        </div>
         <span>© 2026 Nguyen Thai Nguyen / Nomo</span>
-        <span>Designed from Figma. Built with React &amp; TypeScript.</span>
         <a href="#home">Back to top ↑</a>
       </footer>
     </main>
