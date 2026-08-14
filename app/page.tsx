@@ -1,4 +1,5 @@
 import ContactWorkspace from "./components/ContactWorkspace";
+import ExperienceTimer from "./components/ExperienceTimer";
 import MobileNav from "./components/MobileNav";
 import ProjectGallery from "./components/ProjectGallery";
 import SocialLinks from "./components/SocialLinks";
@@ -226,6 +227,7 @@ export default function Home() {
             <div><p>2023</p><h3>Full-Stack Java</h3><span>Practical frontend focus with React<br />KITS Vietnam</span></div>
           </aside>
         </div>
+        <ExperienceTimer />
       </section>
 
       <section className="contact-section" id="contact">
@@ -244,7 +246,7 @@ export default function Home() {
       <footer className="site-footer">
         <div className="footer-socials">
           <span>find Nomo online:</span>
-          <SocialLinks />
+          <SocialLinks compact />
         </div>
         <span>© 2026 Nguyen Thai Nguyen / Nomo</span>
         <a className="back-to-top" href="#home" aria-label="Back to top" title="Back to top">↑</a>
