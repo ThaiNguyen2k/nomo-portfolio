@@ -38,6 +38,8 @@ test("server-renders the complete Nomo portfolio", async () => {
   assert.match(html, /Filter projects by technology/i);
   assert.match(html, /message\.preview\.js/i);
   assert.match(html, /send-message/i);
+  assert.match(html, /formsubmit\.co\/nguyendragon2000@gmail\.com/i);
+  assert.match(html, /name="_captcha" value="false"/i);
   assert.match(html, /Nguyen Thai Nguyen \/ Nomo/i);
 });
 
