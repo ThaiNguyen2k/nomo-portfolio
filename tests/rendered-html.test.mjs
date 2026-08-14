@@ -29,6 +29,7 @@ test("server-renders the complete Nomo portfolio", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>Nomo - Nguyen Thai Nguyen \| Frontend Developer<\/title>/i);
+  assert.match(html, /<meta(?=[^>]*name="viewport")(?=[^>]*minimum-scale=1)(?=[^>]*maximum-scale=1)(?=[^>]*user-scalable=no)[^>]*>/i);
   assert.match(html, /aria-label="Open navigation"/i);
   assert.match(html, /Interactive terminal mini game/i);
   assert.match(html, /Code with purpose\./i);
