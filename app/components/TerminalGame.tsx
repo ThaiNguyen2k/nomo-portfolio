@@ -14,7 +14,18 @@ const defaultDirection: Direction = 1;
 
 type Direction = -12 | -1 | 1 | 12;
 type Phase = "ready" | "countdown" | "running" | "game-over";
-type GameState = { phase: Phase; snake: number[]; food: number; score: number; countdown: number; randomSeed: number };
+type SoundCue = "countdown" | "eat" | "level" | "game-over" | "toggle";
+type GameState = {
+  phase: Phase;
+  snake: number[];
+  food: number;
+  score: number;
+  countdown: number;
+  randomSeed: number;
+  lastEatCell: number | null;
+  lastGrowCell: number | null;
+  effectId: number;
+};
 type GameSession = { sessionId: string; seed: number };
 type LeaderboardEntry = { rank: number; name: string; score: number; createdAt: string };
 type LeaderboardView = "closed" | "list" | "name";
@@ -53,8 +64,23 @@ function localSeed() {
   return window.crypto.getRandomValues(new Uint32Array(1))[0] || 1;
 }
 
+function speedForScore(score: number) {
+  const speedLevel = Math.floor(score / pointsPerSpeedLevel);
+  return Math.max(minimumSpeed, initialSpeed - speedLevel * speedStep);
+}
+
 const initialSnake = startingSnake(defaultDirection);
-const initialGame: GameState = { phase: "ready", snake: initialSnake, food: 34, score: 0, countdown: 0, randomSeed: 1 };
+const initialGame: GameState = {
+  phase: "ready",
+  snake: initialSnake,
+  food: 34,
+  score: 0,
+  countdown: 0,
+  randomSeed: 1,
+  lastEatCell: null,
+  lastGrowCell: null,
+  effectId: 0,
+};
 
 export default function TerminalGame() {
   const [game, setGame] = useState<GameState>(initialGame);
@@ -64,6 +90,7 @@ export default function TerminalGame() {
   const [leaderboardMessage, setLeaderboardMessage] = useState("");
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [playerName, setPlayerName] = useState("");
+  const [audioEnabled, setAudioEnabled] = useState(true);
   const direction = useRef<Direction>(defaultDirection);
   const directionQueue = useRef<Direction[]>([]);
   const activeSession = useRef<GameSession | null>(null);
@@ -71,8 +98,45 @@ export default function TerminalGame() {
   const runStartDirection = useRef<Direction>(defaultDirection);
   const replay = useRef("");
   const starting = useRef(false);
+  const audioEnabledRef = useRef(true);
+  const audioContext = useRef<AudioContext | null>(null);
+  const previousScore = useRef(0);
+  const previousPhase = useRef<Phase>("ready");
   const speedLevel = Math.floor(game.score / pointsPerSpeedLevel);
-  const speed = Math.max(minimumSpeed, initialSpeed - speedLevel * speedStep);
+  const speed = speedForScore(game.score);
+
+  const ensureAudio = useCallback(() => {
+    if (!audioEnabledRef.current) return null;
+    audioContext.current ??= new AudioContext();
+    if (audioContext.current.state === "suspended") void audioContext.current.resume();
+    return audioContext.current;
+  }, []);
+
+  const playPixelSound = useCallback((cue: SoundCue) => {
+    const context = ensureAudio();
+    if (!context) return;
+    const notes: Record<SoundCue, Array<[number, number, number, OscillatorType]>> = {
+      countdown: [[260, 0, .055, "square"]],
+      eat: [[440, 0, .055, "square"], [690, .045, .075, "square"]],
+      level: [[420, 0, .07, "square"], [620, .07, .07, "square"], [860, .14, .11, "square"]],
+      "game-over": [[300, 0, .11, "sawtooth"], [210, .1, .14, "square"], [125, .22, .22, "square"]],
+      toggle: [[560, 0, .065, "square"]],
+    };
+
+    for (const [frequency, delay, duration, type] of notes[cue]) {
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+      const start = context.currentTime + delay;
+      oscillator.type = type;
+      oscillator.frequency.setValueAtTime(frequency, start);
+      gain.gain.setValueAtTime(.0001, start);
+      gain.gain.exponentialRampToValueAtTime(cue === "game-over" ? .055 : .04, start + .008);
+      gain.gain.exponentialRampToValueAtTime(.0001, start + duration);
+      oscillator.connect(gain).connect(context.destination);
+      oscillator.start(start);
+      oscillator.stop(start + duration + .01);
+    }
+  }, [ensureAudio]);
 
   const requestSession = useCallback(async () => {
     const response = await fetch(`${leaderboardApi}/session`, { method: "POST" });
@@ -98,12 +162,24 @@ export default function TerminalGame() {
     runSeed.current = seed;
     runStartDirection.current = nextDirection;
     replay.current = "";
-    setGame({ phase, snake, food: nextFood.food, score: 0, countdown: phase === "countdown" ? 3 : 0, randomSeed: nextFood.seed });
+    previousScore.current = 0;
+    setGame({
+      phase,
+      snake,
+      food: nextFood.food,
+      score: 0,
+      countdown: phase === "countdown" ? 3 : 0,
+      randomSeed: nextFood.seed,
+      lastEatCell: null,
+      lastGrowCell: null,
+      effectId: 0,
+    });
   }, []);
 
   const beginGame = useCallback(async (nextDirection: Direction, phase: Phase) => {
     if (starting.current) return;
     starting.current = true;
+    ensureAudio();
     setIsStarting(true);
     setLeaderboardView("closed");
     setLeaderboardMessage("");
@@ -119,7 +195,7 @@ export default function TerminalGame() {
     resetGame(nextDirection, phase, session?.seed ?? localSeed());
     starting.current = false;
     setIsStarting(false);
-  }, [requestSession, resetGame]);
+  }, [ensureAudio, requestSession, resetGame]);
 
   const startWithCountdown = useCallback(() => {
     void beginGame(defaultDirection, "countdown");
@@ -144,7 +220,7 @@ export default function TerminalGame() {
       directionQueue.current = [];
       runStartDirection.current = nextDirection;
       replay.current = "";
-      setGame((current) => ({ ...current, snake, food: nextFood.food, randomSeed: nextFood.seed }));
+      setGame((current) => ({ ...current, snake, food: nextFood.food, randomSeed: nextFood.seed, lastEatCell: null, lastGrowCell: null }));
       return;
     }
 
@@ -196,6 +272,26 @@ export default function TerminalGame() {
       setLeaderboardMessage(error instanceof Error ? error.message : "Could not save this score.");
     }
   }, [game.score, playerName]);
+
+  const toggleAudio = useCallback(() => {
+    const nextValue = !audioEnabledRef.current;
+    audioEnabledRef.current = nextValue;
+    setAudioEnabled(nextValue);
+    if (nextValue) playPixelSound("toggle");
+  }, [playPixelSound]);
+
+  useEffect(() => {
+    if (game.score > previousScore.current) {
+      playPixelSound(game.score % pointsPerSpeedLevel === 0 ? "level" : "eat");
+    }
+    previousScore.current = game.score;
+  }, [game.score, playPixelSound]);
+
+  useEffect(() => {
+    if (game.phase === "countdown") playPixelSound("countdown");
+    if (game.phase === "game-over" && previousPhase.current !== "game-over") playPixelSound("game-over");
+    previousPhase.current = game.phase;
+  }, [game.countdown, game.phase, playPixelSound]);
 
   useEffect(() => {
     if (game.phase !== "countdown") return;
@@ -254,6 +350,9 @@ export default function TerminalGame() {
           food: nextFood?.food ?? current.food,
           randomSeed: nextFood?.seed ?? current.randomSeed,
           score: current.score + (ateFood ? 1 : 0),
+          lastEatCell: ateFood ? nextHead : current.lastEatCell,
+          lastGrowCell: ateFood ? snake[snake.length - 1] : null,
+          effectId: current.effectId + (ateFood ? 1 : 0),
         };
       });
     }, speed);
@@ -284,8 +383,20 @@ export default function TerminalGame() {
             const snakeIndex = game.snake.indexOf(index);
             const snakeHue = 165 + (snakeIndex / Math.max(1, game.snake.length - 1)) * 105;
             const segmentStyle = snakeIndex >= 0 ? { "--snake-hue": snakeHue } as React.CSSProperties : undefined;
-            return <i style={segmentStyle} className={`${snakeIndex >= 0 ? "snake" : ""} ${snakeIndex === 0 ? "head" : ""} ${index === game.food ? "food" : ""}`} key={index} />;
+            const justAte = index === game.lastEatCell;
+            const justGrew = snakeIndex >= 0 && index === game.lastGrowCell;
+            return (
+              <i
+                style={segmentStyle}
+                className={`${snakeIndex >= 0 ? "snake" : ""} ${snakeIndex === 0 ? "head" : ""} ${index === game.food ? "food" : ""} ${justAte ? "eat-flash" : ""} ${justGrew ? "growing" : ""}`}
+                key={`${index}-${justAte || justGrew ? game.effectId : 0}`}
+              />
+            );
           })}
+
+          {game.score > 0 && game.score % pointsPerSpeedLevel === 0 && (
+            <span className="pixel-level-up" key={`level-${game.effectId}`}>speed level {speedLevel + 1}</span>
+          )}
 
           {game.phase === "countdown" && (
             <div className="game-overlay countdown" aria-live="assertive"><small>verified run ready</small><strong>{game.countdown}</strong><span>use arrows or WASD</span></div>
@@ -308,7 +419,10 @@ export default function TerminalGame() {
           <button className="button button-primary" type="button" onClick={startWithCountdown} disabled={isStarting || game.phase === "running" || game.phase === "countdown"}>
             {isStarting ? "preparing verified run" : game.phase === "countdown" ? `starting in ${game.countdown}` : game.phase === "running" ? "use controls" : game.phase === "game-over" ? "restart game" : "start game"}
           </button>
-          <button className="button button-ghost game-leaderboard-button" type="button" onClick={openLeaderboard} disabled={isStarting || game.phase === "running" || game.phase === "countdown"}>view top 10 ↗</button>
+          <div className="game-secondary-actions">
+            <button className="button button-ghost game-leaderboard-button" type="button" onClick={openLeaderboard} disabled={isStarting || game.phase === "running" || game.phase === "countdown"}>top 10 ↗</button>
+            <button className="button button-ghost game-sound-button" type="button" onClick={toggleAudio} aria-pressed={audioEnabled}>{audioEnabled ? "sound on ♪" : "sound off"}</button>
+          </div>
           {leaderboardMessage && leaderboardView === "closed" && <p className="game-service-note">{leaderboardMessage}</p>}
         </div>
       </div>

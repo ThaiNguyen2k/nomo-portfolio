@@ -1,6 +1,14 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { verifyReplay } from "../leaderboard-worker/src/index.js";
+import { speedForScore, verifyReplay } from "../leaderboard-worker/src/index.js";
+
+test("increases speed only at each five-point milestone", () => {
+  assert.equal(speedForScore(0), 340);
+  assert.equal(speedForScore(4), 340);
+  assert.equal(speedForScore(5), 322);
+  assert.equal(speedForScore(9), 322);
+  assert.equal(speedForScore(10), 304);
+});
 
 test("rejects impossible direction reversals", () => {
   assert.equal(verifyReplay(1, "R", "RL"), null);

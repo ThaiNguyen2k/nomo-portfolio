@@ -77,6 +77,11 @@ const pointsPerSpeedLevel = 5;
 const speedStep = 18;
 const directions = { U: -columns, R: 1, D: columns, L: -1 };
 
+export function speedForScore(score) {
+  const speedLevel = Math.floor(score / pointsPerSpeedLevel);
+  return Math.max(minimumSpeed, initialSpeed - speedLevel * speedStep);
+}
+
 function startingSnake(direction) {
   const head = 65;
   if (direction === 1) return [head, head - 1, head - 2];
@@ -117,8 +122,7 @@ export function verifyReplay(seed, startKey, replay) {
     const nextDirection = directions[key];
     if (nextDirection + direction === 0) return null;
     direction = nextDirection;
-    const speedLevel = Math.floor(score / pointsPerSpeedLevel);
-    expectedDuration += Math.max(minimumSpeed, initialSpeed - speedLevel * speedStep);
+    expectedDuration += speedForScore(score);
 
     const head = snake[0];
     const headRow = Math.floor(head / columns);

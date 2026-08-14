@@ -34,7 +34,8 @@ test("server-renders the complete Nomo portfolio", async () => {
   assert.match(html, /Interactive snake mini game/i);
   assert.match(html, /arrow keys or WASD to steer/i);
   assert.match(html, /collect the orb · avoid walls and your trail/i);
-  assert.match(html, /view top 10/i);
+  assert.match(html, /top 10/i);
+  assert.match(html, /sound on/i);
   assert.match(html, /server verified/i);
   assert.match(html, /02.*full-stack products delivered/is);
   assert.match(html, /GMT\+7 · VIETNAM/i);
