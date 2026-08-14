@@ -14,7 +14,7 @@ const defaultDirection: Direction = 1;
 
 type Direction = -12 | -1 | 1 | 12;
 type Phase = "ready" | "countdown" | "running" | "game-over";
-type SoundCue = "countdown" | "eat" | "level" | "game-over" | "toggle";
+type SoundCue = "countdown" | "start" | "eat" | "level" | "game-over" | "toggle";
 type GameState = {
   phase: Phase;
   snake: number[];
@@ -69,6 +69,11 @@ function speedForScore(score: number) {
   return Math.max(minimumSpeed, initialSpeed - speedLevel * speedStep);
 }
 
+function qualifiesForLeaderboard(scores: LeaderboardEntry[], score: number) {
+  if (score < 1) return false;
+  return scores.length < 10 || scores.some((entry) => score > entry.score);
+}
+
 const initialSnake = startingSnake(defaultDirection);
 const initialGame: GameState = {
   phase: "ready",
@@ -117,6 +122,7 @@ export default function TerminalGame() {
     if (!context) return;
     const notes: Record<SoundCue, Array<[number, number, number, OscillatorType]>> = {
       countdown: [[260, 0, .055, "square"]],
+      start: [[392, 0, .07, "square"], [587, .065, .08, "square"], [784, .13, .13, "square"]],
       eat: [[440, 0, .055, "square"], [690, .045, .075, "square"]],
       level: [[420, 0, .07, "square"], [620, .07, .07, "square"], [860, .14, .11, "square"]],
       "game-over": [[300, 0, .11, "sawtooth"], [210, .1, .14, "square"], [125, .22, .22, "square"]],
@@ -289,6 +295,7 @@ export default function TerminalGame() {
 
   useEffect(() => {
     if (game.phase === "countdown") playPixelSound("countdown");
+    if (game.phase === "running" && previousPhase.current === "countdown") playPixelSound("start");
     if (game.phase === "game-over" && previousPhase.current !== "game-over") playPixelSound("game-over");
     previousPhase.current = game.phase;
   }, [game.countdown, game.phase, playPixelSound]);
@@ -364,8 +371,7 @@ export default function TerminalGame() {
     let cancelled = false;
     void fetchLeaderboard().then((scores) => {
       if (cancelled) return;
-      const qualifies = scores.length < 10 || game.score > scores[scores.length - 1].score;
-      if (!qualifies) return;
+      if (!qualifiesForLeaderboard(scores, game.score)) return;
       setPlayerName(window.localStorage.getItem("nomo-snake-player") ?? "");
       setLeaderboardStatus("idle");
       setLeaderboardMessage("");

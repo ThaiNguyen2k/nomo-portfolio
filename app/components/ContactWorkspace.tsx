@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { FaEnvelope, FaGithub, FaPhone } from "react-icons/fa6";
 
 const emptyForm = { name: "", email: "", subject: "", message: "" };
 const formEndpoint = "https://formsubmit.co/nguyendragon2000@gmail.com";
@@ -75,10 +76,10 @@ export default function ContactWorkspace() {
     <div className="contact-workspace">
       <aside className="contact-sidebar">
         <p># contacts</p>
-        <a href="mailto:nguyendragon2000@gmail.com">✉ nguyendragon2000@gmail.com</a>
-        <a href="tel:+84939205421">⌕ +84 939 205 421</a>
+        <a href="mailto:nguyendragon2000@gmail.com"><FaEnvelope aria-hidden="true" /> nguyendragon2000@gmail.com</a>
+        <a href="tel:+84939205421"><FaPhone aria-hidden="true" /> +84 939 205 421</a>
         <p># find-me-also-in</p>
-        <a href="https://github.com/ThaiNguyen2k" target="_blank" rel="noreferrer">↗ GitHub</a>
+        <a href="https://github.com/ThaiNguyen2k" target="_blank" rel="noreferrer"><FaGithub aria-hidden="true" /> GitHub</a>
       </aside>
 
       <form className="contact-form-panel" action={formEndpoint} method="POST" target="contact-verification-frame" onSubmit={submit} noValidate>

@@ -36,6 +36,12 @@ test("server-renders the complete Nomo portfolio", async () => {
   assert.match(html, /collect the orb · avoid walls and your trail/i);
   assert.match(html, /top 10/i);
   assert.match(html, /sound on/i);
+  assert.match(html, /class="tech-background"/i);
+  assert.match(html, /facebook\.com\/nguyenthainguyen2k/i);
+  assert.match(html, /tiktok\.com\/@zen_tn28/i);
+  assert.match(html, /youtube\.com\/@Nomo284/i);
+  assert.match(html, /zalo\.me\/0939205421/i);
+  assert.match(html, /t\.me\/nomo2k/i);
   assert.match(html, /server verified/i);
   assert.match(html, /02.*full-stack products delivered/is);
   assert.match(html, /GMT\+7 · VIETNAM/i);

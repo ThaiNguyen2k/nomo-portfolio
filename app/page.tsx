@@ -1,7 +1,9 @@
 import ContactWorkspace from "./components/ContactWorkspace";
 import MobileNav from "./components/MobileNav";
 import ProjectGallery from "./components/ProjectGallery";
+import SocialLinks from "./components/SocialLinks";
 import TerminalGame from "./components/TerminalGame";
+import TechBackground from "./components/TechBackground";
 
 const skillGroups = [
   {
@@ -30,7 +32,8 @@ const marqueeSkills = skillGroups.flatMap((group) => group.skills).slice(0, 8);
 
 export default function Home() {
   return (
-    <main>
+    <main className="portfolio-main">
+      <TechBackground />
       <header className="site-header">
         <a className="brand" href="#home" aria-label="Nguyen Thai Nguyen - home">
           <img className="brand-logo" src="/nomo-logo-cube-site.png" alt="Nomo logo" width="58" height="58" />
@@ -240,12 +243,11 @@ export default function Home() {
 
       <footer className="site-footer">
         <div className="footer-socials">
-          <span>find me in:</span>
-          <a href="https://github.com/ThaiNguyen2k" target="_blank" rel="noreferrer">GitHub ↗</a>
-          <a href="mailto:nguyendragon2000@gmail.com">Email ↗</a>
+          <span>find Nomo online:</span>
+          <SocialLinks />
         </div>
         <span>© 2026 Nguyen Thai Nguyen / Nomo</span>
-        <a href="#home">Back to top ↑</a>
+        <a className="back-to-top" href="#home" aria-label="Back to top" title="Back to top">↑</a>
       </footer>
     </main>
   );
