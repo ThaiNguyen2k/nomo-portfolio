@@ -5,7 +5,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const rows = 10;
 const columns = 12;
 const totalCells = rows * columns;
-const initialLength = 3;
+const initialSpeed = 340;
+const minimumSpeed = 180;
+const pointsPerSpeedLevel = 5;
+const speedStep = 18;
 const defaultDirection: Direction = 1;
 
 type Direction = -12 | -1 | 1 | 12;
@@ -32,7 +35,8 @@ export default function TerminalGame() {
   const [game, setGame] = useState<GameState>(initialGame);
   const direction = useRef<Direction>(defaultDirection);
   const queuedDirection = useRef<Direction>(defaultDirection);
-  const speed = Math.max(85, 260 - (game.snake.length - initialLength) * 13);
+  const speedLevel = Math.floor(game.score / pointsPerSpeedLevel);
+  const speed = Math.max(minimumSpeed, initialSpeed - speedLevel * speedStep);
 
   const turn = useCallback((nextDirection: Direction) => {
     if (nextDirection + direction.current === 0) return;
@@ -169,8 +173,8 @@ export default function TerminalGame() {
         </div>
         <div className="game-console">
           <p><span>{"//"}</span> arrow keys or WASD to steer</p>
-          <p><span>{"//"}</span> random nodes · speed increases</p>
-          <div className="game-stats"><span>score <b>{game.score.toString().padStart(2, "0")}</b></span><span>state <b>{game.phase}</b></span><span>speed <b>{Math.round(260 / speed * 10) / 10}×</b></span></div>
+          <p><span>{"//"}</span> random nodes · speed up every 05 points</p>
+          <div className="game-stats"><span>score <b>{game.score.toString().padStart(2, "0")}</b></span><span>state <b>{game.phase}</b></span><span>speed <b>{Math.round(initialSpeed / speed * 10) / 10}×</b></span></div>
           <div className="game-controls" aria-label="Direction controls">
             <button type="button" aria-label="Move up" onClick={() => handleControl(-columns)}>↑</button>
             <button type="button" aria-label="Move left" onClick={() => handleControl(-1)}>←</button>
