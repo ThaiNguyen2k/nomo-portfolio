@@ -52,7 +52,7 @@ body::before {
   font-size: 13px;
 }
 .brand { display: inline-flex; align-items: center; gap: 11px; width: max-content; font-weight: 650; }
-.brand-logo { width: 42px; height: 42px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(55, 229, 195, .13)); }
+.brand-logo { width: 42px; height: 42px; object-fit: contain; background: #f2efe8; border: 1px solid rgba(255,255,255,.7); border-radius: 2px; box-shadow: 0 7px 20px rgba(0,0,0,.22); }
 .site-header nav { display: flex; height: 100%; }
 .site-header nav a { display: grid; place-items: center; padding: 0 22px; color: var(--muted); border-inline-start: 1px solid var(--line); transition: .2s ease; }
 .site-header nav a:last-child { border-inline-end: 1px solid var(--line); }
