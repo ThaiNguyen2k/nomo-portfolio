@@ -37,6 +37,9 @@ test("server-renders the complete Nomo portfolio", async () => {
   assert.match(html, /top 10/i);
   assert.match(html, /sound on/i);
   assert.match(html, /class="tech-background"/i);
+  assert.equal((html.match(/class="tech-constellation /g) ?? []).length, 6);
+  assert.equal((html.match(/class="tech-glyph /g) ?? []).length, 18);
+  assert.equal((html.match(/class="pixel-field /g) ?? []).length, 5);
   assert.match(html, /facebook\.com\/nguyenthainguyen2k/i);
   assert.match(html, /tiktok\.com\/@zen_tn28/i);
   assert.match(html, /youtube\.com\/@Nomo284/i);
