@@ -1,23 +1,50 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useState } from "react";
 
 const emptyForm = { name: "", email: "", subject: "", message: "" };
+const formEndpoint = "https://formsubmit.co/ajax/nguyendragon2000@gmail.com";
 
 export default function ContactWorkspace() {
   const [form, setForm] = useState(emptyForm);
-  const [status, setStatus] = useState<"idle" | "error" | "ready">("idle");
+  const [website, setWebsite] = useState("");
+  const [status, setStatus] = useState<"idle" | "error" | "sending" | "success" | "failed">("idle");
 
-  const mailto = useMemo(() => {
-    const subject = encodeURIComponent(form.subject || `Portfolio message from ${form.name || "a visitor"}`);
-    const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`);
-    return `mailto:nguyendragon2000@gmail.com?subject=${subject}&body=${body}`;
-  }, [form]);
-
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const valid = form.name.trim() && /^\S+@\S+\.\S+$/.test(form.email) && form.message.trim();
-    setStatus(valid ? "ready" : "error");
+    if (!valid) {
+      setStatus("error");
+      return;
+    }
+
+    if (website) {
+      setStatus("success");
+      return;
+    }
+
+    setStatus("sending");
+    try {
+      const response = await fetch(formEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          email: form.email.trim(),
+          subject: form.subject.trim() || "Portfolio contact",
+          message: form.message.trim(),
+          _subject: `[Nomo Portfolio] ${form.subject.trim() || "New message"}`,
+          _template: "table",
+          _url: "https://thainguyen2k.github.io/nomo-portfolio/#contact",
+        }),
+      });
+      const result = await response.json().catch(() => null) as { success?: boolean | string } | null;
+      if (!response.ok || result?.success === false || result?.success === "false") throw new Error("Submission failed");
+      setStatus("success");
+      setForm(emptyForm);
+    } catch {
+      setStatus("failed");
+    }
   };
 
   return (
@@ -31,13 +58,15 @@ export default function ContactWorkspace() {
       </aside>
 
       <form className="contact-form-panel" onSubmit={submit} noValidate>
-        <label>_name:<input value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} placeholder="Nguyen Van A" /></label>
-        <label>_email:<input type="email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} placeholder="you@example.com" /></label>
-        <label>_subject:<input value={form.subject} onChange={(event) => setForm({ ...form, subject: event.target.value })} placeholder="Frontend opportunity" /></label>
-        <label>_message:<textarea rows={6} value={form.message} onChange={(event) => setForm({ ...form, message: event.target.value })} placeholder="Tell me about the product, team, or challenge..." /></label>
-        <button className="button button-primary" type="submit">prepare-message <span aria-hidden="true">→</span></button>
+        <label className="form-honeypot" aria-hidden="true">website:<input name="_honey" value={website} onChange={(event) => setWebsite(event.target.value)} tabIndex={-1} autoComplete="off" /></label>
+        <label>_name:<input name="name" value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} placeholder="Nguyen Van A" /></label>
+        <label>_email:<input name="email" type="email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} placeholder="you@example.com" /></label>
+        <label>_subject:<input name="subject" value={form.subject} onChange={(event) => setForm({ ...form, subject: event.target.value })} placeholder="Frontend opportunity" /></label>
+        <label>_message:<textarea name="message" rows={6} value={form.message} onChange={(event) => setForm({ ...form, message: event.target.value })} placeholder="Tell me about the product, team, or challenge..." /></label>
+        <button className="button button-primary" type="submit" disabled={status === "sending"}>{status === "sending" ? "sending..." : "send-message"} <span aria-hidden="true">→</span></button>
         {status === "error" && <p className="form-status error">Please add your name, a valid email, and a message.</p>}
-        {status === "ready" && <p className="form-status success">Message ready. <a href={mailto}>Open your email app ↗</a></p>}
+        {status === "success" && <p className="form-status success">Message sent successfully. Thank you!</p>}
+        {status === "failed" && <p className="form-status error">Could not send right now. Please email me directly at <a href="mailto:nguyendragon2000@gmail.com">nguyendragon2000@gmail.com</a>.</p>}
       </form>
 
       <div className="contact-preview" aria-live="polite">
@@ -48,7 +77,7 @@ export default function ContactWorkspace() {
           <p><b>03</b> &nbsp;email: <strong>&quot;{form.email || "you@example.com"}&quot;</strong>,</p>
           <p><b>04</b> &nbsp;subject: <strong>&quot;{form.subject || "let's build"}&quot;</strong>,</p>
           <p><b>05</b> &nbsp;message: <strong>&quot;{form.message ? `${form.message.slice(0, 34)}${form.message.length > 34 ? "…" : ""}` : "your message"}&quot;</strong>,</p>
-          <p><b>06</b> &nbsp;ready: <span>{status === "ready" ? "true" : "false"}</span></p>
+          <p><b>06</b> &nbsp;sent: <span>{status === "success" ? "true" : "false"}</span></p>
           <p><b>07</b> &#125;;</p>
         </div>
         <div className="terminal-status"><span>● online</span><span>Response time: &lt; 24h</span></div>

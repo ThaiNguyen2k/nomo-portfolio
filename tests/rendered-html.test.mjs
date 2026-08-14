@@ -37,6 +37,7 @@ test("server-renders the complete Nomo portfolio", async () => {
   assert.match(html, /GFT Career Connect AI/i);
   assert.match(html, /Filter projects by technology/i);
   assert.match(html, /message\.preview\.js/i);
+  assert.match(html, /send-message/i);
   assert.match(html, /Nguyen Thai Nguyen \/ Nomo/i);
 });
 

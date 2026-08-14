@@ -257,6 +257,7 @@ body::before {
 .contact-form-panel label { width: 100%; color: #8e98b7; font: 10px var(--font-mono); }
 .contact-form-panel input, .contact-form-panel textarea { width: 100%; margin-top: 8px; border: 1px solid #2c375d; border-radius: 4px; outline: 0; background: #05091d; color: #dce0ef; padding: 11px 12px; resize: vertical; font: 11px/1.55 var(--font-mono); transition: border-color .2s, box-shadow .2s; }
 .contact-form-panel input:focus, .contact-form-panel textarea:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(139,92,246,.1); }
+.form-honeypot { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip-path: inset(50%) !important; white-space: nowrap !important; }
 .contact-form-panel .button { min-height: 40px; margin-top: 2px; }
 .form-status { margin: 0; font: 9px var(--font-mono); }
 .form-status.error { color: #ff8b8b; }
