@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
 const emptyForm = { name: "", email: "", subject: "", message: "" };
 const formEndpoint = "https://formsubmit.co/nguyendragon2000@gmail.com";
@@ -8,7 +8,10 @@ const formEndpoint = "https://formsubmit.co/nguyendragon2000@gmail.com";
 export default function ContactWorkspace() {
   const [form, setForm] = useState(emptyForm);
   const [website, setWebsite] = useState("");
-  const [status, setStatus] = useState<"idle" | "error" | "sending" | "success" | "failed">("idle");
+  const [status, setStatus] = useState<"idle" | "error" | "verifying" | "success" | "failed">("idle");
+  const [verificationOpen, setVerificationOpen] = useState(false);
+  const submissionStarted = useRef(false);
+  const verificationFrame = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -39,7 +42,33 @@ export default function ContactWorkspace() {
       return;
     }
 
-    setStatus("sending");
+    submissionStarted.current = true;
+    setVerificationOpen(true);
+    setStatus("verifying");
+  };
+
+  const completeVerification = () => {
+    if (!submissionStarted.current || !verificationFrame.current) return;
+
+    try {
+      const frameUrl = new URL(verificationFrame.current.contentWindow?.location.href ?? "");
+      if (frameUrl.origin !== window.location.origin || frameUrl.searchParams.get("contact") !== "sent") return;
+
+      submissionStarted.current = false;
+      setVerificationOpen(false);
+      setStatus("success");
+      setForm(emptyForm);
+      verificationFrame.current.src = "about:blank";
+    } catch {
+      // The cross-origin FormSubmit CAPTCHA is expected while verification is active.
+    }
+  };
+
+  const cancelVerification = () => {
+    submissionStarted.current = false;
+    setVerificationOpen(false);
+    setStatus("idle");
+    if (verificationFrame.current) verificationFrame.current.src = "about:blank";
   };
 
   return (
@@ -52,7 +81,7 @@ export default function ContactWorkspace() {
         <a href="https://github.com/ThaiNguyen2k" target="_blank" rel="noreferrer">↗ GitHub</a>
       </aside>
 
-      <form className="contact-form-panel" action={formEndpoint} method="POST" onSubmit={submit} noValidate>
+      <form className="contact-form-panel" action={formEndpoint} method="POST" target="contact-verification-frame" onSubmit={submit} noValidate>
         <input type="hidden" name="_subject" value={`[Nomo Portfolio] ${form.subject.trim() || "New message"}`} />
         <input type="hidden" name="_template" value="table" />
         <input type="hidden" name="_next" value="https://thainguyen2k.github.io/nomo-portfolio/?contact=sent#contact" />
@@ -62,7 +91,11 @@ export default function ContactWorkspace() {
         <label>_email:<input name="email" type="email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} placeholder="you@example.com" /></label>
         <label>_subject:<input name="subject" value={form.subject} onChange={(event) => setForm({ ...form, subject: event.target.value })} placeholder="Frontend opportunity" /></label>
         <label>_message:<textarea name="message" rows={6} value={form.message} onChange={(event) => setForm({ ...form, message: event.target.value })} placeholder="Tell me about the product, team, or challenge..." /></label>
-        <button className="button button-primary" type="submit" disabled={status === "sending"}>{status === "sending" ? "sending..." : "send-message"} <span aria-hidden="true">→</span></button>
+        <button className="button button-primary" type="submit" disabled={status === "verifying"}>{status === "verifying" ? "complete-verification..." : "send-message"} <span aria-hidden="true">→</span></button>
+        <div className={`form-verification ${verificationOpen ? "is-open" : ""}`} aria-hidden={!verificationOpen}>
+          <div><span>human-verification</span><button type="button" onClick={cancelVerification} aria-label="Cancel verification">×</button></div>
+          <iframe ref={verificationFrame} name="contact-verification-frame" title="Complete the contact form CAPTCHA" onLoad={completeVerification} />
+        </div>
       </form>
 
       {(status === "error" || status === "success" || status === "failed") && (

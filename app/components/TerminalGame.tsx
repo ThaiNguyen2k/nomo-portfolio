@@ -5,35 +5,82 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const rows = 10;
 const columns = 12;
 const totalCells = rows * columns;
-const initialSnake = [66, 65, 64];
-const initialFood = 34;
+const initialLength = 3;
+const defaultDirection: Direction = 1;
 
 type Direction = -12 | -1 | 1 | 12;
-type Phase = "ready" | "running" | "game-over";
-type GameState = { phase: Phase; snake: number[]; food: number; score: number };
+type Phase = "ready" | "countdown" | "running" | "game-over";
+type GameState = { phase: Phase; snake: number[]; food: number; score: number; countdown: number };
 
-const initialGame: GameState = { phase: "ready", snake: initialSnake, food: initialFood, score: 0 };
-
-function nextFood(snake: number[], currentFood: number) {
-  for (let offset = 17; offset < totalCells + 17; offset += 1) {
-    const candidate = (currentFood + offset * 7) % totalCells;
-    if (!snake.includes(candidate)) return candidate;
-  }
-  return currentFood;
+function startingSnake(nextDirection: Direction) {
+  const head = 65;
+  if (nextDirection === 1) return [head, head - 1, head - 2];
+  if (nextDirection === -1) return [head, head + 1, head + 2];
+  if (nextDirection === columns) return [head, head - columns, head - columns * 2];
+  return [head, head + columns, head + columns * 2];
 }
+
+function randomFood(snake: number[]) {
+  const availableCells = Array.from({ length: totalCells }, (_, index) => index).filter((index) => !snake.includes(index));
+  return availableCells[Math.floor(Math.random() * availableCells.length)] ?? -1;
+}
+
+const initialSnake = startingSnake(defaultDirection);
+const initialGame: GameState = { phase: "ready", snake: initialSnake, food: 34, score: 0, countdown: 0 };
 
 export default function TerminalGame() {
   const [game, setGame] = useState<GameState>(initialGame);
-  const direction = useRef<Direction>(1);
-  const queuedDirection = useRef<Direction>(1);
+  const direction = useRef<Direction>(defaultDirection);
+  const queuedDirection = useRef<Direction>(defaultDirection);
+  const speed = Math.max(85, 260 - (game.snake.length - initialLength) * 13);
 
   const turn = useCallback((nextDirection: Direction) => {
-    if (game.phase !== "running" || nextDirection + direction.current === 0) return;
+    if (nextDirection + direction.current === 0) return;
     queuedDirection.current = nextDirection;
-  }, [game.phase]);
+  }, []);
+
+  const resetGame = useCallback((nextDirection: Direction, phase: Phase) => {
+    const snake = startingSnake(nextDirection);
+    direction.current = nextDirection;
+    queuedDirection.current = nextDirection;
+    setGame({ phase, snake, food: randomFood(snake), score: 0, countdown: phase === "countdown" ? 3 : 0 });
+  }, []);
+
+  const startWithCountdown = useCallback(() => {
+    resetGame(defaultDirection, "countdown");
+  }, [resetGame]);
+
+  const handleControl = useCallback((nextDirection: Direction) => {
+    if (game.phase === "ready" || game.phase === "game-over") {
+      resetGame(nextDirection, "running");
+      return;
+    }
+
+    if (game.phase === "countdown") {
+      const snake = startingSnake(nextDirection);
+      direction.current = nextDirection;
+      queuedDirection.current = nextDirection;
+      setGame((current) => ({ ...current, snake, food: randomFood(snake) }));
+      return;
+    }
+
+    turn(nextDirection);
+  }, [game.phase, resetGame, turn]);
 
   useEffect(() => {
-    if (game.phase !== "running") return;
+    if (game.phase !== "countdown") return;
+
+    const timer = window.setTimeout(() => {
+      setGame((current) => current.countdown > 1
+        ? { ...current, countdown: current.countdown - 1 }
+        : { ...current, phase: "running", countdown: 0 });
+    }, 1000);
+
+    return () => window.clearTimeout(timer);
+  }, [game.countdown, game.phase]);
+
+  useEffect(() => {
+    if (game.phase !== "running" && game.phase !== "countdown") return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
       const keyDirections: Record<string, Direction> = {
@@ -53,12 +100,12 @@ export default function TerminalGame() {
       const nextDirection = keyDirections[event.key];
       if (!nextDirection) return;
       event.preventDefault();
-      turn(nextDirection);
+      handleControl(nextDirection);
     };
 
     window.addEventListener("keydown", handleKeyDown, { passive: false });
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [game.phase, turn]);
+  }, [game.phase, handleControl]);
 
   useEffect(() => {
     if (game.phase !== "running") return;
@@ -89,22 +136,16 @@ export default function TerminalGame() {
           : [nextHead, ...current.snake.slice(0, -1)];
 
         return {
-          phase: "running",
+          ...current,
           snake,
-          food: ateFood ? nextFood(snake, current.food) : current.food,
+          food: ateFood ? randomFood(snake) : current.food,
           score: current.score + (ateFood ? 1 : 0),
         };
       });
-    }, 155);
+    }, speed);
 
     return () => window.clearInterval(timer);
-  }, [game.phase]);
-
-  const start = () => {
-    direction.current = 1;
-    queuedDirection.current = 1;
-    setGame({ phase: "running", snake: initialSnake, food: initialFood, score: 0 });
-  };
+  }, [game.phase, speed]);
 
   return (
     <section className="section-shell terminal-game" aria-label="Interactive snake mini game">
@@ -113,21 +154,31 @@ export default function TerminalGame() {
         <div className="game-board" style={{ "--game-columns": columns } as React.CSSProperties} aria-label="Snake game board">
           {Array.from({ length: totalCells }, (_, index) => {
             const snakeIndex = game.snake.indexOf(index);
-            return <i className={`${snakeIndex >= 0 ? "snake" : ""} ${snakeIndex === 0 ? "head" : ""} ${index === game.food ? "food" : ""}`} key={index} />;
+            const snakeHue = 165 + (snakeIndex / Math.max(1, game.snake.length - 1)) * 105;
+            const segmentStyle = snakeIndex >= 0 ? { "--snake-hue": snakeHue } as React.CSSProperties : undefined;
+            return <i style={segmentStyle} className={`${snakeIndex >= 0 ? "snake" : ""} ${snakeIndex === 0 ? "head" : ""} ${index === game.food ? "food" : ""}`} key={index} />;
           })}
+
+          {game.phase === "countdown" && (
+            <div className="game-overlay countdown" aria-live="assertive"><small>get ready</small><strong>{game.countdown}</strong><span>use arrows or WASD</span></div>
+          )}
+
+          {game.phase === "game-over" && (
+            <div className="game-overlay game-over" role="alert"><small>session ended</small><strong>GAME OVER</strong><span>score {game.score.toString().padStart(2, "0")}</span><button type="button" onClick={startWithCountdown}>play again</button></div>
+          )}
         </div>
         <div className="game-console">
           <p><span>{"//"}</span> arrow keys or WASD to steer</p>
-          <p><span>{"//"}</span> eat orange nodes, avoid walls</p>
-          <div className="game-stats"><span>score <b>{game.score.toString().padStart(2, "0")}</b></span><span>state <b>{game.phase}</b></span></div>
+          <p><span>{"//"}</span> random nodes · speed increases</p>
+          <div className="game-stats"><span>score <b>{game.score.toString().padStart(2, "0")}</b></span><span>state <b>{game.phase}</b></span><span>speed <b>{Math.round(260 / speed * 10) / 10}×</b></span></div>
           <div className="game-controls" aria-label="Direction controls">
-            <button type="button" aria-label="Move up" onClick={() => turn(-columns)} disabled={game.phase !== "running"}>↑</button>
-            <button type="button" aria-label="Move left" onClick={() => turn(-1)} disabled={game.phase !== "running"}>←</button>
-            <button type="button" aria-label="Move down" onClick={() => turn(columns)} disabled={game.phase !== "running"}>↓</button>
-            <button type="button" aria-label="Move right" onClick={() => turn(1)} disabled={game.phase !== "running"}>→</button>
+            <button type="button" aria-label="Move up" onClick={() => handleControl(-columns)}>↑</button>
+            <button type="button" aria-label="Move left" onClick={() => handleControl(-1)}>←</button>
+            <button type="button" aria-label="Move down" onClick={() => handleControl(columns)}>↓</button>
+            <button type="button" aria-label="Move right" onClick={() => handleControl(1)}>→</button>
           </div>
-          <button className="button button-primary" type="button" onClick={start} disabled={game.phase === "running"}>
-            {game.phase === "running" ? "use controls" : game.phase === "game-over" ? "play again" : "start game"}
+          <button className="button button-primary" type="button" onClick={startWithCountdown} disabled={game.phase === "running" || game.phase === "countdown"}>
+            {game.phase === "countdown" ? `starting in ${game.countdown}` : game.phase === "running" ? "use controls" : game.phase === "game-over" ? "restart game" : "start game"}
           </button>
         </div>
       </div>
