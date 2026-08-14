@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
   },
-  icons: { icon: "/nomo-logo.png", shortcut: "/nomo-logo.png", apple: "/nomo-logo.png" },
+  icons: { icon: "/nomo-logo-modern.png", shortcut: "/nomo-logo-modern.png", apple: "/nomo-logo-modern.png" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

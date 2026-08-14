@@ -89,7 +89,7 @@ export default function Home() {
     <main>
       <header className="site-header">
         <a className="brand" href="#home" aria-label="Nguyen Thai Nguyen - home">
-          <img className="brand-logo" src="/nomo-logo.png" alt="Nomo logo" width="42" height="42" />
+          <img className="brand-logo" src="/nomo-logo-modern.png" alt="Nomo logo" width="42" height="42" />
           <span>nomo.dev</span>
         </a>
         <nav aria-label="Main navigation">
