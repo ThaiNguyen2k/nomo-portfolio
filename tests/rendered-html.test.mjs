@@ -32,6 +32,7 @@ test("server-renders the complete Nomo portfolio", async () => {
   assert.match(html, /<meta(?=[^>]*name="viewport")(?=[^>]*minimum-scale=1)(?=[^>]*maximum-scale=1)(?=[^>]*user-scalable=no)[^>]*>/i);
   assert.match(html, /aria-label="Open navigation"/i);
   assert.match(html, /Interactive terminal mini game/i);
+  assert.equal((html.match(/class="marquee-group"/g) ?? []).length, 2);
   assert.match(html, /Code with purpose\./i);
   assert.match(html, /GFT Career Connect AI/i);
   assert.match(html, /Filter projects by technology/i);

@@ -97,8 +97,12 @@ export default function Home() {
       <TerminalGame />
 
       <div className="skill-marquee" aria-label="Core technologies">
-        <div>
-          {marqueeSkills.map((skill) => <span key={skill}>{skill} <i>+</i></span>)}
+        <div className="marquee-track">
+          {[0, 1].map((cycle) => (
+            <div className="marquee-group" aria-hidden={cycle === 1} key={cycle}>
+              {marqueeSkills.map((skill) => <span key={`${cycle}-${skill}`}>{skill} <i>+</i></span>)}
+            </div>
+          ))}
         </div>
       </div>
 
