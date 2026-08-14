@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import SocialLinks from "./SocialLinks";
 
 const links = [
   ["#home", "_hello"],
@@ -30,9 +31,8 @@ export default function MobileNav() {
           {links.map(([href, label]) => <a href={href} key={href} onClick={() => setOpen(false)}>{label}</a>)}
         </nav>
         <div className="mobile-menu-socials">
-          <span>find me in:</span>
-          <a href="https://github.com/ThaiNguyen2k" target="_blank" rel="noreferrer">GitHub ↗</a>
-          <a href="mailto:nguyendragon2000@gmail.com">Email ↗</a>
+          <span>find Nomo online:</span>
+          <SocialLinks compact />
         </div>
       </div>
     </>
