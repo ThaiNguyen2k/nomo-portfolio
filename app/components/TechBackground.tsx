@@ -46,10 +46,17 @@ const glyphs = [
   ["diamond", 70, 34, 28, 2.9], ["ring", 24, 44, 36, 3.5], ["cross", 77, 49, 30, 4.1],
   ["orbit", 29, 58, 40, 4.7], ["bracket", 72, 70, 38, 5.3], ["diamond", 26, 80, 30, 5.9],
   ["ring", 75, 91, 34, 6.5], ["cross", 39, 72, 24, 7.1], ["bracket", 63, 28, 26, 7.7],
+  ["diamond", 17, 4, 24, .6], ["ring", 81, 7, 28, 1.4], ["cross", 96, 20, 22, 2.2],
+  ["bracket", 2, 27, 32, 3], ["orbit", 84, 31, 30, 3.8], ["diamond", 16, 37, 24, 4.6],
+  ["ring", 96, 43, 26, 5.4], ["cross", 3, 51, 24, 6.2], ["bracket", 83, 57, 32, 7],
+  ["orbit", 16, 63, 28, 7.8], ["diamond", 96, 69, 24, 1.8], ["ring", 3, 76, 30, 2.6],
+  ["cross", 84, 82, 22, 3.4], ["bracket", 17, 88, 30, 4.2], ["orbit", 96, 96, 28, 5],
+  ["diamond", 58, 5, 20, 5.8], ["cross", 43, 53, 20, 6.6], ["ring", 58, 96, 24, 7.4],
 ];
 
-const rails = ["rail-one", "rail-two", "rail-three", "rail-four", "rail-five", "rail-six"];
-const fields = ["field-one", "field-two", "field-three", "field-four", "field-five", "field-six", "field-seven", "field-eight"];
+const rails = ["rail-one", "rail-two", "rail-three", "rail-four", "rail-five", "rail-six", "rail-seven", "rail-eight", "rail-nine", "rail-ten"];
+const fields = ["field-one", "field-two", "field-three", "field-four", "field-five", "field-six", "field-seven", "field-eight", "field-nine", "field-ten", "field-eleven", "field-twelve", "field-thirteen", "field-fourteen"];
+const circuits = ["circuit-one", "circuit-two", "circuit-three", "circuit-four", "circuit-five", "circuit-six", "circuit-seven", "circuit-eight"];
 
 export default function TechBackground() {
   return (
@@ -80,6 +87,12 @@ export default function TechBackground() {
       ))}
       {fields.map((field, fieldIndex) => (
         <div className={`pixel-field ${field}`} key={field}>{Array.from({ length: 20 }, (_, index) => <i style={{ "--index": index + fieldIndex * 3 } as CssVariables} key={index} />)}</div>
+      ))}
+      {circuits.map((circuit, circuitIndex) => (
+        <div className={`section-circuit ${circuit}`} key={circuit}>
+          <span />
+          {Array.from({ length: 12 }, (_, index) => <i style={{ "--index": index + circuitIndex * 2 } as CssVariables} key={index} />)}
+        </div>
       ))}
       <span className="tech-scanline" />
     </div>

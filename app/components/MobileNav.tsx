@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import SocialLinks from "./SocialLinks";
 
 const links = [
@@ -11,8 +12,11 @@ const links = [
   ["#contact", "_contact-me"],
 ];
 
+const subscribeToClient = () => () => {};
+
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
+  const mounted = useSyncExternalStore(subscribeToClient, () => true, () => false);
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -31,16 +35,19 @@ export default function MobileNav() {
       >
         <span /><span /><span />
       </button>
-      <div className={`mobile-menu-panel ${open ? "is-open" : ""}`} aria-hidden={!open}>
-        <div className="mobile-menu-heading"><span># navigate:</span><span>05 routes</span></div>
-        <nav aria-label="Mobile navigation">
-          {links.map(([href, label]) => <a href={href} key={href} onClick={() => setOpen(false)}>{label}</a>)}
-        </nav>
-        <div className="mobile-menu-socials">
-          <span>find Nomo online:</span>
-          <SocialLinks compact />
-        </div>
-      </div>
+      {mounted && createPortal(
+        <div className={`mobile-menu-panel ${open ? "is-open" : ""}`} aria-hidden={!open}>
+          <div className="mobile-menu-heading"><span># navigate:</span><span>05 routes</span></div>
+          <nav aria-label="Mobile navigation">
+            {links.map(([href, label]) => <a href={href} key={href} onClick={() => setOpen(false)}>{label}</a>)}
+          </nav>
+          <div className="mobile-menu-socials">
+            <span>find Nomo online:</span>
+            <SocialLinks compact />
+          </div>
+        </div>,
+        document.body,
+      )}
     </>
   );
 }
