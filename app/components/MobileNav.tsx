@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SocialLinks from "./SocialLinks";
 
 const links = [
@@ -14,10 +14,16 @@ const links = [
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    if (open) document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = previousOverflow; };
+  }, [open]);
+
   return (
     <>
       <button
-        className="mobile-menu-toggle"
+        className={`mobile-menu-toggle ${open ? "is-open" : ""}`}
         type="button"
         aria-label={open ? "Close navigation" : "Open navigation"}
         aria-expanded={open}
@@ -26,7 +32,7 @@ export default function MobileNav() {
         <span /><span /><span />
       </button>
       <div className={`mobile-menu-panel ${open ? "is-open" : ""}`} aria-hidden={!open}>
-        <div className="mobile-menu-heading"><span># navigate:</span><button type="button" onClick={() => setOpen(false)}>×</button></div>
+        <div className="mobile-menu-heading"><span># navigate:</span><span>05 routes</span></div>
         <nav aria-label="Mobile navigation">
           {links.map(([href, label]) => <a href={href} key={href} onClick={() => setOpen(false)}>{label}</a>)}
         </nav>

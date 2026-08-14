@@ -107,6 +107,7 @@ export default function TerminalGame() {
   const audioContext = useRef<AudioContext | null>(null);
   const previousScore = useRef(0);
   const previousPhase = useRef<Phase>("ready");
+  const swipeStart = useRef<{ x: number; y: number; pointerId: number } | null>(null);
   const speedLevel = Math.floor(game.score / pointsPerSpeedLevel);
   const speed = speedForScore(game.score);
 
@@ -232,6 +233,30 @@ export default function TerminalGame() {
 
     turn(nextDirection);
   }, [beginGame, game.phase, turn]);
+
+  const handleBoardPointerDown = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+    if (!event.isPrimary) return;
+    swipeStart.current = { x: event.clientX, y: event.clientY, pointerId: event.pointerId };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  }, []);
+
+  const handleBoardPointerMove = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+    const start = swipeStart.current;
+    if (!start || start.pointerId !== event.pointerId) return;
+    const deltaX = event.clientX - start.x;
+    const deltaY = event.clientY - start.y;
+    if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 22) return;
+
+    const nextDirection: Direction = Math.abs(deltaX) > Math.abs(deltaY)
+      ? deltaX > 0 ? 1 : -1
+      : deltaY > 0 ? columns : -columns;
+    handleControl(nextDirection);
+    swipeStart.current = { x: event.clientX, y: event.clientY, pointerId: event.pointerId };
+  }, [handleControl]);
+
+  const clearBoardPointer = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+    if (swipeStart.current?.pointerId === event.pointerId) swipeStart.current = null;
+  }, []);
 
   const openLeaderboard = useCallback(() => {
     setLeaderboardView("list");
@@ -384,7 +409,15 @@ export default function TerminalGame() {
     <section className="section-shell terminal-game" aria-label="Interactive snake mini game">
       <div className="window-bar"><div className="window-dots"><i /><i /><i /></div><span>nomo-lab.game</span><span className="window-status">server verified</span></div>
       <div className="game-body">
-        <div className="game-board" style={{ "--game-columns": columns } as React.CSSProperties} aria-label="Snake game board">
+        <div
+          className="game-board"
+          style={{ "--game-columns": columns } as React.CSSProperties}
+          aria-label="Snake game board. Swipe up, down, left, or right to steer."
+          onPointerDown={handleBoardPointerDown}
+          onPointerMove={handleBoardPointerMove}
+          onPointerUp={clearBoardPointer}
+          onPointerCancel={clearBoardPointer}
+        >
           {Array.from({ length: totalCells }, (_, index) => {
             const snakeIndex = game.snake.indexOf(index);
             const snakeHue = 165 + (snakeIndex / Math.max(1, game.snake.length - 1)) * 105;
@@ -415,6 +448,7 @@ export default function TerminalGame() {
         <div className="game-console">
           <p><span>{"//"}</span> arrow keys or WASD to steer</p>
           <p><span>{"//"}</span> collect the orb · avoid walls and your trail</p>
+          <p className="game-swipe-hint"><span>{"//"}</span> swipe anywhere on the board to steer</p>
           <div className="game-stats"><span>score <b>{game.score.toString().padStart(2, "0")}</b></span><span>state <b>{isStarting ? "syncing" : game.phase}</b></span><span>speed <b>{Math.round(initialSpeed / speed * 10) / 10}×</b></span></div>
           <div className="game-controls" aria-label="Direction controls">
             <button type="button" aria-label="Move up" onClick={() => handleControl(-columns)}>↑</button>

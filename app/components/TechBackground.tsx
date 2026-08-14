@@ -42,10 +42,14 @@ const glyphs = [
   ["orbit", 89, 68, 62, 3.6], ["cross", 5, 75, 34, 4], ["diamond", 92, 82, 46, 4.4],
   ["ring", 8, 89, 52, 4.8], ["bracket", 88, 94, 42, 5.2], ["cross", 50, 14, 26, 5.6],
   ["diamond", 48, 40, 30, 6], ["ring", 52, 64, 32, 6.4], ["orbit", 47, 87, 38, 6.8],
+  ["cross", 23, 10, 28, 1.1], ["orbit", 73, 16, 36, 1.7], ["bracket", 28, 24, 34, 2.3],
+  ["diamond", 70, 34, 28, 2.9], ["ring", 24, 44, 36, 3.5], ["cross", 77, 49, 30, 4.1],
+  ["orbit", 29, 58, 40, 4.7], ["bracket", 72, 70, 38, 5.3], ["diamond", 26, 80, 30, 5.9],
+  ["ring", 75, 91, 34, 6.5], ["cross", 39, 72, 24, 7.1], ["bracket", 63, 28, 26, 7.7],
 ];
 
 const rails = ["rail-one", "rail-two", "rail-three", "rail-four", "rail-five", "rail-six"];
-const fields = ["field-one", "field-two", "field-three", "field-four", "field-five"];
+const fields = ["field-one", "field-two", "field-three", "field-four", "field-five", "field-six", "field-seven", "field-eight"];
 
 export default function TechBackground() {
   return (
