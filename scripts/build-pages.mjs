@@ -2,7 +2,7 @@ import { cp, mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
-const repository = "nomo-frontend-portfolio";
+const repository = "nomo-portfolio";
 const basePath = `/${repository}/`;
 const clientDir = resolve("dist/client");
 const outputDir = resolve("dist/pages");

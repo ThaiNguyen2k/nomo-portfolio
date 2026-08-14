@@ -6,7 +6,7 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://thainguyen2k.github.io/nomo-frontend-portfolio/"),
+  metadataBase: new URL("https://thainguyen2k.github.io/nomo-portfolio/"),
   title: "Nomo - Nguyen Thai Nguyen | Frontend Developer",
   description:
     "Frontend Developer specializing in React, TypeScript, responsive commerce experiences, and AI-powered products.",
