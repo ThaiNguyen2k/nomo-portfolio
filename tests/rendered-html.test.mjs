@@ -33,7 +33,11 @@ test("server-renders the complete Nomo portfolio", async () => {
   assert.match(html, /aria-label="Open navigation"/i);
   assert.match(html, /Interactive snake mini game/i);
   assert.match(html, /arrow keys or WASD to steer/i);
-  assert.match(html, /random nodes · speed up every 05 points/i);
+  assert.match(html, /collect the orb · avoid walls and your trail/i);
+  assert.match(html, /view top 10/i);
+  assert.match(html, /server verified/i);
+  assert.match(html, /02.*full-stack products delivered/is);
+  assert.match(html, /GMT\+7 · VIETNAM/i);
   assert.match(html, /Move up/i);
   assert.ok(html.indexOf('class="contact-section"') < html.indexOf('class="section-shell terminal-game"'));
   assert.ok(html.indexOf('class="section-shell terminal-game"') < html.indexOf('class="site-footer"'));
