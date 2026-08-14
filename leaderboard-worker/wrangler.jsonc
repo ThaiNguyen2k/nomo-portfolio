@@ -1,0 +1,18 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "nomo-snake-leaderboard",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-14",
+  "workers_dev": true,
+  "observability": {
+    "enabled": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "nomo-snake-leaderboard",
+      "database_id": "d55e6f10-49fc-4a9f-97d1-fd4d75df73b9",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

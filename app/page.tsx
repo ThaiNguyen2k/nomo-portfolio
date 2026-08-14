@@ -120,7 +120,7 @@ export default function Home() {
             <article><strong>10<span>+</span></strong><p>web applications delivered</p></article>
             <article><strong>03<span>yr</span></strong><p>professional experience</p></article>
             <article><strong>12</strong><p>routes shipped in GFT Career AI</p></article>
-            <article><strong>64<span>/64</span></strong><p>verified unit tests</p></article>
+            <article><strong>02<span>+</span></strong><p>full-stack products delivered</p></article>
           </div>
         </div>
 
@@ -164,7 +164,7 @@ export default function Home() {
           <div className="window-bar">
             <div className="window-dots"><i /><i /><i /></div>
             <span>skills.json</span>
-            <span>UTF-8</span>
+            <span>GMT+7 · VIETNAM</span>
           </div>
           <div className="stack-content">
             <p><span>01</span> &#123;</p>
