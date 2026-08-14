@@ -7,13 +7,9 @@ const basePath = `/${repository}/`;
 const clientDir = resolve("dist/client");
 const outputDir = resolve("dist/pages");
 
-async function renderHomePage() {
-  const workerUrl = pathToFileURL(resolve("dist/server/index.js"));
-  workerUrl.searchParams.set("pages-build", String(Date.now()));
-  const { default: worker } = await import(workerUrl.href);
-
+async function renderPage(worker, pathname, acceptedStatuses) {
   const response = await worker.fetch(
-    new Request("http://localhost/", {
+    new Request(`http://localhost${pathname}`, {
       headers: { accept: "text/html" },
     }),
     {
@@ -27,17 +23,13 @@ async function renderHomePage() {
     },
   );
 
-  if (!response.ok) {
-    throw new Error(`Static render failed with status ${response.status}`);
+  if (!acceptedStatuses.includes(response.status)) {
+    throw new Error(`Static render for ${pathname} failed with status ${response.status}`);
   }
 
   let html = await response.text();
 
-  // The portfolio is fully server-rendered. Removing the runtime scripts keeps
-  // the GitHub Pages build static and avoids requests to an unavailable RSC server.
   html = html
-    .replace(/<script\b[\s\S]*?<\/script>/gi, "")
-    .replace(/<link\b(?=[^>]*\brel=["']modulepreload["'])[^>]*>/gi, "")
     .replace(/\b(href|src)=(["'])\/(?!\/)/g, `$1=$2${basePath}`)
     .replaceAll("url(/_next/", `url(${basePath}_next/`);
 
@@ -48,19 +40,19 @@ async function renderHomePage() {
   return html;
 }
 
-async function rewriteCssAssets(directory) {
+async function rewriteStaticAssets(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
 
   await Promise.all(entries.map(async (entry) => {
     const entryPath = resolve(directory, entry.name);
     if (entry.isDirectory()) {
-      await rewriteCssAssets(entryPath);
+      await rewriteStaticAssets(entryPath);
       return;
     }
 
-    if (entry.name.endsWith(".css")) {
-      const css = await readFile(entryPath, "utf8");
-      await writeFile(entryPath, css.replaceAll("/_next/", `${basePath}_next/`));
+    if (entry.name.endsWith(".css") || entry.name.endsWith(".js")) {
+      const source = await readFile(entryPath, "utf8");
+      await writeFile(entryPath, source.replaceAll("/_next/", `${basePath}_next/`));
     }
   }));
 }
@@ -70,12 +62,18 @@ await mkdir(outputDir, { recursive: true });
 await cp(clientDir, outputDir, { recursive: true });
 await rm(resolve(outputDir, "_headers"), { force: true });
 
-const html = await renderHomePage();
+const workerUrl = pathToFileURL(resolve("dist/server/index.js"));
+workerUrl.searchParams.set("pages-build", String(Date.now()));
+const { default: worker } = await import(workerUrl.href);
+const [html, notFoundHtml] = await Promise.all([
+  renderPage(worker, "/", [200]),
+  renderPage(worker, "/missing-page", [404]),
+]);
 await Promise.all([
   writeFile(resolve(outputDir, "index.html"), html),
-  writeFile(resolve(outputDir, "404.html"), html),
+  writeFile(resolve(outputDir, "404.html"), notFoundHtml),
   writeFile(resolve(outputDir, ".nojekyll"), ""),
-  rewriteCssAssets(outputDir),
+  rewriteStaticAssets(outputDir),
 ]);
 
 console.log(`GitHub Pages artifact created at ${outputDir}`);
