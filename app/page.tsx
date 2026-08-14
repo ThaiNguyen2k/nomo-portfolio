@@ -69,20 +69,30 @@ const projects = [
   },
 ];
 
-const skills = [
-  "React.js",
-  "TypeScript",
-  "JavaScript ES6+",
-  "HTML5 / CSS3",
-  "SCSS",
-  "React Native / Expo",
-  "Cloudflare Workers / D1",
-  "FastAPI / Python",
-  "REST APIs",
-  "Cafe24 / Odoo / WordPress",
-  "Figma / Photoshop",
-  "AI-assisted development",
+const skillGroups = [
+  {
+    name: "frontend",
+    skills: ["React.js", "TypeScript", "JavaScript ES6+", "HTML5 / CSS3", "SCSS", "Responsive UI"],
+  },
+  {
+    name: "backend_cloud",
+    skills: ["FastAPI", "Python", "REST APIs", "Cloudflare Workers", "Better Auth", "RBAC"],
+  },
+  {
+    name: "database",
+    skills: ["PostgreSQL", "SQL", "Cloudflare D1", "Drizzle ORM", "SQLAlchemy", "Database migrations"],
+  },
+  {
+    name: "mobile_cms",
+    skills: ["React Native / Expo", "Cafe24", "Odoo", "WordPress"],
+  },
+  {
+    name: "tools_ai_design",
+    skills: ["Git / GitHub", "VS Code", "Chrome DevTools", "ChatGPT / Claude / Codex", "Figma / Photoshop"],
+  },
 ];
+
+const marqueeSkills = skillGroups.flatMap((group) => group.skills).slice(0, 8);
 
 export default function Home() {
   return (
@@ -151,7 +161,7 @@ export default function Home() {
 
       <div className="skill-marquee" aria-label="Core technologies">
         <div>
-          {skills.slice(0, 8).map((skill) => <span key={skill}>{skill} <i>+</i></span>)}
+          {marqueeSkills.map((skill) => <span key={skill}>{skill} <i>+</i></span>)}
         </div>
       </div>
 
@@ -182,9 +192,15 @@ export default function Home() {
             <span>UTF-8</span>
           </div>
           <div className="stack-content">
-            <p><span>01</span> <em>&quot;frontend&quot;</em>: [</p>
-            <div className="skill-list">{skills.map((skill) => <span key={skill}>{skill}</span>)}</div>
-            <p><span>18</span> ]</p>
+            <p><span>01</span> &#123;</p>
+            {skillGroups.map((group, index) => (
+              <div className="skill-group" key={group.name}>
+                <p><span>{String(index * 4 + 2).padStart(2, "0")}</span> <em>&quot;{group.name}&quot;</em>: [</p>
+                <div className="skill-list">{group.skills.map((skill) => <span key={skill}>{skill}</span>)}</div>
+                <p><span>{String(index * 4 + 4).padStart(2, "0")}</span> ],</p>
+              </div>
+            ))}
+            <p><span>22</span> &#125;</p>
           </div>
         </div>
       </section>

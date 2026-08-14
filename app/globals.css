@@ -131,6 +131,8 @@ body::before {
 .stack-content p { margin: 0; color: #bbc2db; }
 .stack-content p span { color: #4e5878; margin-right: 15px; }
 .stack-content p em { color: var(--purple-soft); font-style: normal; }
+.skill-group { padding-block: 18px; }
+.skill-group + .skill-group { border-top: 1px solid rgba(58, 70, 111, .42); }
 .skill-list { display: flex; flex-wrap: wrap; gap: 10px; padding: 18px 35px; }
 .skill-list span { padding: 8px 11px; border: 1px solid #283356; background: rgba(139,92,246,.04); color: #cbd1e8; font-size: 11px; }
 .skill-list span::before { content: "#"; color: var(--teal); margin-right: 6px; }
