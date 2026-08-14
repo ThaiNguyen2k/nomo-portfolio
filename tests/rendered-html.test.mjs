@@ -38,8 +38,9 @@ test("server-renders the complete Nomo portfolio", async () => {
   assert.match(html, /sound on/i);
   assert.match(html, /class="tech-background"/i);
   assert.equal((html.match(/class="tech-constellation /g) ?? []).length, 6);
-  assert.equal((html.match(/class="tech-glyph /g) ?? []).length, 30);
-  assert.equal((html.match(/class="pixel-field /g) ?? []).length, 8);
+  assert.equal((html.match(/class="tech-glyph /g) ?? []).length, 48);
+  assert.equal((html.match(/class="pixel-field /g) ?? []).length, 14);
+  assert.equal((html.match(/class="section-circuit /g) ?? []).length, 8);
   assert.match(html, /facebook\.com\/nguyenthainguyen2k/i);
   assert.match(html, /tiktok\.com\/@zen_tn28/i);
   assert.match(html, /youtube\.com\/@Nomo284/i);
@@ -56,11 +57,13 @@ test("server-renders the complete Nomo portfolio", async () => {
   assert.equal((html.match(/class="marquee-group"/g) ?? []).length, 2);
   assert.match(html, /Code with purpose\./i);
   assert.match(html, /GFT Career Connect AI/i);
-  assert.match(html, /Independent Projects/i);
   assert.match(html, /Live professional experience timer/i);
   assert.match(html, /career\.runtime/i);
   assert.match(html, /Building products/i);
-  assert.match(html, /Built GFT Career Connect AI and NutriVision AI end to end/i);
+  assert.match(html, /life\.timeline/i);
+  assert.match(html, /May - Aug 2023/i);
+  assert.match(html, /Can Tho University of Technology/i);
+  assert.match(html, /Building complete products across UI, APIs, databases/i);
   assert.match(html, /Filter projects by technology/i);
   assert.match(html, /message\.preview\.js/i);
   assert.match(html, /send-message/i);
