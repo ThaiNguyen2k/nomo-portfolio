@@ -6,17 +6,19 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nomo-frontend-portfolio.nomo2k.chatgpt.site"),
+  metadataBase: new URL("https://thainguyen2k.github.io/nomo-frontend-portfolio/"),
   title: "Nomo - Nguyen Thai Nguyen | Frontend Developer",
   description:
     "Frontend Developer specializing in React, TypeScript, responsive commerce experiences, and AI-powered products.",
   keywords: ["Frontend Developer", "React Developer", "TypeScript", "Nguyen Thai Nguyen", "Ho Chi Minh City"],
   authors: [{ name: "Nguyen Thai Nguyen" }],
+  alternates: { canonical: "/" },
   openGraph: {
     title: "Nomo - Nguyen Thai Nguyen | Frontend Developer",
     description: "React & TypeScript developer crafting responsive interfaces and AI-powered products.",
     type: "website",
     locale: "en_US",
+    url: "/",
     images: [{ url: "/og.png", width: 1536, height: 1024, alt: "Nomo - Nguyen Thai Nguyen, Frontend Developer" }],
   },
   twitter: {
