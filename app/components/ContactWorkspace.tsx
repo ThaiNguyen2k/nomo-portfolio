@@ -1,50 +1,47 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 
 const emptyForm = { name: "", email: "", subject: "", message: "" };
-const formEndpoint = "https://formsubmit.co/ajax/nguyendragon2000@gmail.com";
+const formEndpoint = "https://formsubmit.co/nguyendragon2000@gmail.com";
 
 export default function ContactWorkspace() {
   const [form, setForm] = useState(emptyForm);
   const [website, setWebsite] = useState("");
   const [status, setStatus] = useState<"idle" | "error" | "sending" | "success" | "failed">("idle");
+  const [submissionStarted, setSubmissionStarted] = useState(false);
+  const submissionTimeout = useRef<number | null>(null);
 
-  const submit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const submit = (event: FormEvent<HTMLFormElement>) => {
     const valid = form.name.trim() && /^\S+@\S+\.\S+$/.test(form.email) && form.message.trim();
     if (!valid) {
+      event.preventDefault();
       setStatus("error");
       return;
     }
 
     if (website) {
+      event.preventDefault();
       setStatus("success");
       return;
     }
 
     setStatus("sending");
-    try {
-      const response = await fetch(formEndpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          name: form.name.trim(),
-          email: form.email.trim(),
-          subject: form.subject.trim() || "Portfolio contact",
-          message: form.message.trim(),
-          _subject: `[Nomo Portfolio] ${form.subject.trim() || "New message"}`,
-          _template: "table",
-          _url: "https://thainguyen2k.github.io/nomo-portfolio/#contact",
-        }),
-      });
-      const result = await response.json().catch(() => null) as { success?: boolean | string } | null;
-      if (!response.ok || result?.success === false || result?.success === "false") throw new Error("Submission failed");
-      setStatus("success");
-      setForm(emptyForm);
-    } catch {
+    setSubmissionStarted(true);
+    if (submissionTimeout.current) window.clearTimeout(submissionTimeout.current);
+    submissionTimeout.current = window.setTimeout(() => {
       setStatus("failed");
-    }
+      setSubmissionStarted(false);
+    }, 15000);
+  };
+
+  const completeSubmission = () => {
+    if (!submissionStarted) return;
+    if (submissionTimeout.current) window.clearTimeout(submissionTimeout.current);
+    submissionTimeout.current = null;
+    setSubmissionStarted(false);
+    setStatus("success");
+    setForm(emptyForm);
   };
 
   return (
@@ -57,7 +54,12 @@ export default function ContactWorkspace() {
         <a href="https://github.com/ThaiNguyen2k" target="_blank" rel="noreferrer">↗ GitHub</a>
       </aside>
 
-      <form className="contact-form-panel" onSubmit={submit} noValidate>
+      <form className="contact-form-panel" action={formEndpoint} method="POST" target="contact-submit-target" onSubmit={submit} noValidate>
+        <input type="hidden" name="_subject" value={`[Nomo Portfolio] ${form.subject.trim() || "New message"}`} />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_next" value="https://thainguyen2k.github.io/nomo-portfolio/#contact" />
+        <input type="hidden" name="_url" value="https://thainguyen2k.github.io/nomo-portfolio/#contact" />
         <label className="form-honeypot" aria-hidden="true">website:<input name="_honey" value={website} onChange={(event) => setWebsite(event.target.value)} tabIndex={-1} autoComplete="off" /></label>
         <label>_name:<input name="name" value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} placeholder="Nguyen Van A" /></label>
         <label>_email:<input name="email" type="email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} placeholder="you@example.com" /></label>
@@ -68,6 +70,7 @@ export default function ContactWorkspace() {
         {status === "success" && <p className="form-status success">Message sent successfully. Thank you!</p>}
         {status === "failed" && <p className="form-status error">Could not send right now. Please email me directly at <a href="mailto:nguyendragon2000@gmail.com">nguyendragon2000@gmail.com</a>.</p>}
       </form>
+      <iframe className="form-submit-target" name="contact-submit-target" title="Contact form response" onLoad={completeSubmission} />
 
       <div className="contact-preview" aria-live="polite">
         <div className="window-bar"><div className="window-dots"><i /><i /><i /></div><span>message.preview.js</span><span>{status}</span></div>
