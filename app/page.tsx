@@ -89,8 +89,7 @@ export default function Home() {
     <main>
       <header className="site-header">
         <a className="brand" href="#home" aria-label="Nguyen Thai Nguyen - home">
-          <img className="brand-logo" src="/nomo-logo-modern.png" alt="Nomo logo" width="42" height="42" />
-          <span>nomo.dev</span>
+          <img className="brand-logo" src="/nomo-logo-cube-site.png" alt="Nomo logo" width="58" height="58" />
         </a>
         <nav aria-label="Main navigation">
           <a href="#home">_hello</a>
@@ -129,7 +128,7 @@ export default function Home() {
             </div>
             <div className="profile-window-body">
               <div className="portrait-wrap">
-                <img src="/profile.png" alt="Portrait of Nguyen Thai Nguyen" width="305" height="381" />
+                <img src="/avatar-nomo.png" alt="Portrait of Nguyen Thai Nguyen" width="1254" height="1405" />
                 <div className="portrait-badge"><span>03</span> years<br />experience</div>
               </div>
               <div className="profile-code" aria-hidden="true">
@@ -217,7 +216,7 @@ export default function Home() {
                 </div>
                 <div className="project-body">
                   <div className="project-title-row">
-                    <div><span>Project {project.id} //</span><h3>{project.name}</h3></div>
+                    <div><span>Project {project.id} {"//"}</span><h3>{project.name}</h3></div>
                     <span className="project-arrow" aria-hidden="true">↗</span>
                   </div>
                   <p>{project.description}</p>
@@ -253,7 +252,7 @@ export default function Home() {
             </article>
           </div>
           <aside className="education-card">
-            <span className="comment">// education &amp; training</span>
+            <span className="comment">{"//"} education &amp; training</span>
             <div><p>2018 - 2022</p><h3>Engineer&apos;s Degree</h3><span>Information Systems<br />Can Tho University of Technology</span></div>
             <div><p>2023</p><h3>Full-Stack Java</h3><span>Practical frontend focus with React<br />KITS Vietnam</span></div>
           </aside>

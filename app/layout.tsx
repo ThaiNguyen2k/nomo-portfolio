@@ -6,7 +6,7 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://portfolio.example.com"),
+  metadataBase: new URL("https://nomo-frontend-portfolio.nomo2k.chatgpt.site"),
   title: "Nomo - Nguyen Thai Nguyen | Frontend Developer",
   description:
     "Frontend Developer specializing in React, TypeScript, responsive commerce experiences, and AI-powered products.",
@@ -17,8 +17,15 @@ export const metadata: Metadata = {
     description: "React & TypeScript developer crafting responsive interfaces and AI-powered products.",
     type: "website",
     locale: "en_US",
+    images: [{ url: "/og.png", width: 1536, height: 1024, alt: "Nomo - Nguyen Thai Nguyen, Frontend Developer" }],
   },
-  icons: { icon: "/nomo-logo-modern.png", shortcut: "/nomo-logo-modern.png", apple: "/nomo-logo-modern.png" },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nomo - Nguyen Thai Nguyen | Frontend Developer",
+    description: "React & TypeScript developer crafting responsive interfaces and AI-powered products.",
+    images: ["/og.png"],
+  },
+  icons: { icon: "/nomo-logo-cube.png", shortcut: "/nomo-logo-cube.png", apple: "/nomo-logo-cube.png" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
