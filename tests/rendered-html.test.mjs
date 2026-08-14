@@ -31,15 +31,21 @@ test("server-renders the complete Nomo portfolio", async () => {
   assert.match(html, /<title>Nomo - Nguyen Thai Nguyen \| Frontend Developer<\/title>/i);
   assert.match(html, /<meta(?=[^>]*name="viewport")(?=[^>]*minimum-scale=1)(?=[^>]*maximum-scale=1)(?=[^>]*user-scalable=no)[^>]*>/i);
   assert.match(html, /aria-label="Open navigation"/i);
-  assert.match(html, /Interactive terminal mini game/i);
+  assert.match(html, /Interactive snake mini game/i);
+  assert.match(html, /arrow keys or WASD to steer/i);
+  assert.match(html, /Move up/i);
   assert.equal((html.match(/class="marquee-group"/g) ?? []).length, 2);
   assert.match(html, /Code with purpose\./i);
   assert.match(html, /GFT Career Connect AI/i);
+  assert.match(html, /Independent Projects/i);
+  assert.match(html, /Built GFT Career Connect AI and NutriVision AI end to end/i);
   assert.match(html, /Filter projects by technology/i);
   assert.match(html, /message\.preview\.js/i);
   assert.match(html, /send-message/i);
   assert.match(html, /formsubmit\.co\/nguyendragon2000@gmail\.com/i);
-  assert.match(html, /name="_captcha" value="false"/i);
+  assert.match(html, /\?contact=sent#contact/i);
+  assert.doesNotMatch(html, /contact-submit-target/i);
+  assert.doesNotMatch(html, /name="_captcha" value="false"/i);
   assert.match(html, /Nguyen Thai Nguyen \/ Nomo/i);
 });
 
