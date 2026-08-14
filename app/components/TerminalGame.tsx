@@ -34,19 +34,20 @@ const initialGame: GameState = { phase: "ready", snake: initialSnake, food: 34, 
 export default function TerminalGame() {
   const [game, setGame] = useState<GameState>(initialGame);
   const direction = useRef<Direction>(defaultDirection);
-  const queuedDirection = useRef<Direction>(defaultDirection);
+  const directionQueue = useRef<Direction[]>([]);
   const speedLevel = Math.floor(game.score / pointsPerSpeedLevel);
   const speed = Math.max(minimumSpeed, initialSpeed - speedLevel * speedStep);
 
   const turn = useCallback((nextDirection: Direction) => {
-    if (nextDirection + direction.current === 0) return;
-    queuedDirection.current = nextDirection;
+    const previousDirection = directionQueue.current.at(-1) ?? direction.current;
+    if (nextDirection === previousDirection || nextDirection + previousDirection === 0) return;
+    if (directionQueue.current.length < 2) directionQueue.current.push(nextDirection);
   }, []);
 
   const resetGame = useCallback((nextDirection: Direction, phase: Phase) => {
     const snake = startingSnake(nextDirection);
     direction.current = nextDirection;
-    queuedDirection.current = nextDirection;
+    directionQueue.current = [];
     setGame({ phase, snake, food: randomFood(snake), score: 0, countdown: phase === "countdown" ? 3 : 0 });
   }, []);
 
@@ -63,7 +64,7 @@ export default function TerminalGame() {
     if (game.phase === "countdown") {
       const snake = startingSnake(nextDirection);
       direction.current = nextDirection;
-      queuedDirection.current = nextDirection;
+      directionQueue.current = [];
       setGame((current) => ({ ...current, snake, food: randomFood(snake) }));
       return;
     }
@@ -115,11 +116,12 @@ export default function TerminalGame() {
     if (game.phase !== "running") return;
 
     const timer = window.setInterval(() => {
+      const nextDirection = directionQueue.current.shift() ?? direction.current;
+      direction.current = nextDirection;
+
       setGame((current) => {
         if (current.phase !== "running") return current;
 
-        const nextDirection = queuedDirection.current;
-        direction.current = nextDirection;
         const head = current.snake[0];
         const headRow = Math.floor(head / columns);
         const headColumn = head % columns;
