@@ -124,7 +124,8 @@ body::before {
 .game-stats b { color: var(--teal); font-size: 13px; font-weight: 500; }
 
 .skill-marquee { overflow: hidden; border-block: 1px solid var(--line); background: #070c23; transform: rotate(-1deg) scale(1.02); }
-.skill-marquee div { width: max-content; display: flex; gap: 48px; padding: 15px 0; animation: drift 30s linear infinite; }
+.marquee-track { width: max-content; display: flex; animation: drift 30s linear infinite; will-change: transform; }
+.marquee-group { display: flex; flex-shrink: 0; gap: 48px; padding: 15px 48px 15px 0; }
 .skill-marquee span { font: 12px var(--font-mono); text-transform: uppercase; color: #aab2ce; white-space: nowrap; }
 .skill-marquee i { margin-left: 48px; color: var(--purple); font-style: normal; }
 
@@ -284,7 +285,7 @@ body::before {
 .not-found-code .button { margin-top: 24px; }
 
 @keyframes pulse { 50% { opacity: .45; box-shadow: 0 0 4px var(--teal); } }
-@keyframes drift { to { transform: translateX(-25%); } }
+@keyframes drift { to { transform: translateX(-50%); } }
 @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
 .reveal { animation: rise .85s both cubic-bezier(.2,.8,.2,1); }
 .reveal-delay { animation-delay: .16s; }
