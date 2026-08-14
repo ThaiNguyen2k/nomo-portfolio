@@ -31,6 +31,44 @@ const skillGroups = [
 
 const marqueeSkills = skillGroups.flatMap((group) => group.skills).slice(0, 8);
 
+const lifeMilestones = [
+  {
+    period: "2018 - 2022",
+    type: "University",
+    title: "Information Systems",
+    place: "Can Tho University of Technology",
+    detail: "Engineer’s degree and the foundation for software, systems, and product thinking.",
+  },
+  {
+    period: "May - Aug 2023",
+    type: "Training",
+    title: "Full-Stack Java",
+    place: "KITS Vietnam",
+    detail: "Practical web development training with a strong React and frontend focus.",
+  },
+  {
+    period: "Aug 2023 - Nov 2025",
+    type: "Full-time",
+    title: "Frontend Developer",
+    place: "Amoeba Co., Ltd",
+    detail: "Delivered 10+ responsive commerce and business applications from design to production.",
+  },
+  {
+    period: "Dec 2025 - Jun 2026",
+    type: "Freelance",
+    title: "Frontend Developer",
+    place: "Amoeba Co., Ltd",
+    detail: "Continued building storefront UI, campaign pages, responsive journeys, and performance improvements.",
+  },
+  {
+    period: "Jul 2026 - Present",
+    type: "Independent",
+    title: "Full-stack Developer",
+    place: "GFT Career AI · NutriVision AI",
+    detail: "Building complete products across UI, APIs, databases, authentication, AI, tests, and deployment.",
+  },
+];
+
 export default function Home() {
   return (
     <main className="portfolio-main">
@@ -203,29 +241,24 @@ export default function Home() {
           <p><span>03.</span> / experience</p>
           <h2>From design files<br /><span>to production systems.</span></h2>
         </div>
-        <div className="experience-grid">
-          <div className="timeline">
-            <article className="timeline-item active">
-              <div className="timeline-date">Jul 2026 - Present</div>
-              <div><span>Freelance</span><h3>Full-stack Developer</h3><p>Independent Projects</p></div>
-              <p>Built GFT Career Connect AI and NutriVision AI end to end—from product flows and responsive UI to APIs, databases, authentication, AI integrations, automated tests, and production deployment.</p>
-            </article>
-            <article className="timeline-item">
-              <div className="timeline-date">Dec 2025 - Jun 2026</div>
-              <div><span>Freelance</span><h3>Frontend Developer</h3><p>Amoeba Co., Ltd</p></div>
-              <p>Continued delivery for Andar, building interactive storefront UI, seasonal campaign pages, responsive product journeys, and performance improvements.</p>
-            </article>
-            <article className="timeline-item">
-              <div className="timeline-date">Aug 2023 - Nov 2025</div>
-              <div><span>Full-time</span><h3>Frontend Developer</h3><p>Amoeba Co., Ltd</p></div>
-              <p>Delivered 10+ responsive commerce and business applications, reusable components, CMS customizations, and API-connected customer journeys.</p>
-            </article>
+        <div className="life-timeline" aria-label="Education and professional journey">
+          <div className="life-timeline-heading">
+            <span>{"//"} life.timeline</span>
+            <span>2018 → now</span>
           </div>
-          <aside className="education-card">
-            <span className="comment">{"//"} education &amp; training</span>
-            <div><p>2018 - 2022</p><h3>Engineer&apos;s Degree</h3><span>Information Systems<br />Can Tho University of Technology</span></div>
-            <div><p>2023</p><h3>Full-Stack Java</h3><span>Practical frontend focus with React<br />KITS Vietnam</span></div>
-          </aside>
+          <div className="life-timeline-scroll">
+            <div className="life-track" aria-hidden="true" />
+            {lifeMilestones.map((milestone, index) => (
+              <article className={`life-milestone ${index === lifeMilestones.length - 1 ? "active" : ""}`} key={milestone.period}>
+                <span className="life-node" aria-hidden="true"><i>{String(index + 1).padStart(2, "0")}</i></span>
+                <p className="life-period">{milestone.period}</p>
+                <span className="life-type">{milestone.type}</span>
+                <h3>{milestone.title}</h3>
+                <strong>{milestone.place}</strong>
+                <p className="life-detail">{milestone.detail}</p>
+              </article>
+            ))}
+          </div>
         </div>
         <ExperienceTimer />
       </section>
