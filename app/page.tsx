@@ -131,7 +131,7 @@ export default function Home() {
 
       <div className="skill-marquee" aria-label="Core technologies">
         <div className="marquee-track">
-          {[0, 1].map((cycle) => (
+          {[0, 1, 2, 3].map((cycle) => (
             <div className="marquee-group" aria-hidden={cycle === 1} key={cycle}>
               {marqueeSkills.map((skill) => <span key={`${cycle}-${skill}`}>{skill} <i>+</i></span>)}
             </div>
