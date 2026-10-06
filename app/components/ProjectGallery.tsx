@@ -4,18 +4,18 @@ import { useState } from "react";
 
 const projects = [
   {
-    id: "01", slug: "career-ai", name: "GFT Career Connect AI", period: "Jul - Aug 2026", category: "AI support automation platform",
-    description: "A bilingual, multi-role support platform with controlled AI triage, knowledge retrieval, confidence gating, human handoff, audit history, and real-data dashboards.",
+    id: "01", slug: "career-ai", name: "GFT Career Connect AI", period: "Jul - Aug 2026", category: "Full-stack AI support platform",
+    description: "A bilingual support automation product for candidates, employers, collaborators, and administrators, deployed on Cloudflare with an auditable D1 data layer.",
     stack: ["React 19", "TypeScript", "Cloudflare D1", "Drizzle ORM"], live: "https://gft-career-connect-ai.nguyendragon2000.workers.dev/", github: "https://github.com/ThaiNguyen2k/gft-career-connect-ai", featured: true,
   },
   {
     id: "02", slug: "nutrivision", name: "NutriVision AI", period: "Aug 2026", category: "Mobile nutrition intelligence",
-    description: "A full-stack Expo, React, and FastAPI product for meal analysis, food logging, weight tracking, and source-aware nutrition insights across daily, 7-day, and 30-day views.",
+    description: "A full-stack mobile and web product connecting an Expo app and React admin dashboard to FastAPI and PostgreSQL for meal analysis, food logging, weight tracking, and nutrition insights.",
     stack: ["Expo", "React", "FastAPI", "PostgreSQL"], featured: true,
   },
   {
-    id: "03", slug: "andar", name: "Andar E-commerce", period: "Apr 2025 - Jun 2026", category: "Fashion commerce experience",
-    description: "Production product and campaign pages built from PSD concepts, with responsive merchandising UI, galleries, sticky CTAs, variant interactions, and seasonal releases.",
+    id: "03", slug: "andar", name: "Andar E-commerce Platform", period: "Apr 2025 - Jun 2026", category: "Commerce platform engineering",
+    description: "Delivered responsive product and campaign pages, image galleries, sticky calls to action, product variants, promotional banners, and performance improvements on Cafe24.",
     stack: ["Cafe24", "JavaScript", "SCSS", "Photoshop"], live: "https://andar01.cafe24.com/",
   },
   {
@@ -37,10 +37,10 @@ const projects = [
 
 const filters = [
   { id: "all", label: "all projects", terms: [] },
-  { id: "react", label: "React / TypeScript", terms: ["React", "React 19", "TypeScript"] },
   { id: "backend", label: "backend / cloud", terms: ["FastAPI", "PostgreSQL", "Cloudflare D1", "Drizzle ORM"] },
-  { id: "commerce", label: "commerce / CMS", terms: ["Cafe24", "Odoo"] },
   { id: "mobile", label: "mobile", terms: ["Expo"] },
+  { id: "commerce", label: "commerce / CMS", terms: ["Cafe24", "Odoo"] },
+  { id: "react", label: "React / TypeScript", terms: ["React", "React 19", "TypeScript"] },
 ];
 
 export default function ProjectGallery() {

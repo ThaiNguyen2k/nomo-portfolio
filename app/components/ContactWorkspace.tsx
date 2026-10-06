@@ -90,7 +90,7 @@ export default function ContactWorkspace() {
         <label className="form-honeypot" aria-hidden="true">website:<input name="_honey" value={website} onChange={(event) => setWebsite(event.target.value)} tabIndex={-1} autoComplete="off" /></label>
         <label>_name:<input name="name" value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} placeholder="Nguyen Van A" /></label>
         <label>_email:<input name="email" type="email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} placeholder="you@example.com" /></label>
-        <label>_subject:<input name="subject" value={form.subject} onChange={(event) => setForm({ ...form, subject: event.target.value })} placeholder="Frontend opportunity" /></label>
+        <label>_subject:<input name="subject" value={form.subject} onChange={(event) => setForm({ ...form, subject: event.target.value })} placeholder="Software Engineer opportunity" /></label>
         <label>_message:<textarea name="message" rows={6} value={form.message} onChange={(event) => setForm({ ...form, message: event.target.value })} placeholder="Tell me about the product, team, or challenge..." /></label>
         <button className="button button-primary" type="submit" disabled={status === "verifying"}>{status === "verifying" ? "complete-verification..." : "send-message"} <span aria-hidden="true">→</span></button>
         <div className={`form-verification ${verificationOpen ? "is-open" : ""}`} aria-hidden={!verificationOpen}>

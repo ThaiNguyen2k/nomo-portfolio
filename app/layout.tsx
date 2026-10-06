@@ -16,24 +16,24 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://thainguyen2k.github.io/nomo-portfolio/"),
-  title: "Nomo - Nguyen Thai Nguyen | Frontend Developer",
+  title: "Nomo - Nguyen Thai Nguyen | Software Engineer",
   description:
-    "Frontend Developer specializing in React, TypeScript, responsive commerce experiences, and AI-powered products.",
-  keywords: ["Frontend Developer", "React Developer", "TypeScript", "Nguyen Thai Nguyen", "Ho Chi Minh City"],
+    "Software Engineer building full-stack web, mobile, backend, cloud, and AI products with React, FastAPI, PostgreSQL, Cloudflare, and Expo.",
+  keywords: ["Software Engineer", "Full-Stack Developer", "Backend Engineer", "FastAPI", "PostgreSQL", "Cloudflare", "React", "Nguyen Thai Nguyen", "Ho Chi Minh City"],
   authors: [{ name: "Nguyen Thai Nguyen" }],
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Nomo - Nguyen Thai Nguyen | Frontend Developer",
-    description: "React & TypeScript developer crafting responsive interfaces and AI-powered products.",
+    title: "Nomo - Nguyen Thai Nguyen | Software Engineer",
+    description: "Building complete software products across web, mobile, APIs, databases, cloud services, and AI.",
     type: "website",
     locale: "en_US",
     url: "/",
-    images: [{ url: "/og.png", width: 1536, height: 1024, alt: "Nomo - Nguyen Thai Nguyen, Frontend Developer" }],
+    images: [{ url: "/og.png", width: 1536, height: 1024, alt: "Nomo - Nguyen Thai Nguyen, Software Engineer" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nomo - Nguyen Thai Nguyen | Frontend Developer",
-    description: "React & TypeScript developer crafting responsive interfaces and AI-powered products.",
+    title: "Nomo - Nguyen Thai Nguyen | Software Engineer",
+    description: "Building complete software products across web, mobile, APIs, databases, cloud services, and AI.",
     images: ["/og.png"],
   },
   icons: { icon: "/nomo-logo-cube.png", shortcut: "/nomo-logo-cube.png", apple: "/nomo-logo-cube.png" },

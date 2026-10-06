@@ -8,64 +8,57 @@ import TechBackground from "./components/TechBackground";
 
 const skillGroups = [
   {
-    name: "frontend",
-    skills: ["React.js", "TypeScript", "JavaScript ES6+", "HTML5 / CSS3", "SCSS", "Responsive UI"],
+    name: "backend_services",
+    skills: ["Python", "FastAPI", "REST APIs", "Cloudflare Workers / D1"],
   },
   {
-    name: "backend_cloud",
-    skills: ["FastAPI", "Python", "REST APIs", "Cloudflare Workers", "Better Auth", "RBAC"],
+    name: "data_and_auth",
+    skills: ["PostgreSQL", "SQL", "SQLAlchemy", "Drizzle ORM", "Better Auth", "RBAC"],
   },
   {
-    name: "database",
-    skills: ["PostgreSQL", "SQL", "Cloudflare D1", "Drizzle ORM", "SQLAlchemy", "Database migrations"],
+    name: "web_and_mobile",
+    skills: ["React", "TypeScript", "JavaScript ES6+", "React Native / Expo", "HTML / CSS / SCSS", "Responsive UI"],
   },
   {
-    name: "mobile_cms",
-    skills: ["React Native / Expo", "Cafe24", "Odoo", "WordPress"],
+    name: "platforms_and_delivery",
+    skills: ["Cafe24", "Odoo", "WordPress", "Reusable components", "Unit testing", "Linting", "Production builds"],
   },
   {
-    name: "tools_ai_design",
-    skills: ["Git / GitHub", "VS Code", "Chrome DevTools", "ChatGPT / Claude / Codex", "Figma / Photoshop"],
+    name: "engineering_tools_and_ai",
+    skills: ["Git / GitHub", "VS Code", "Chrome DevTools", "OpenAI / Gemini", "Claude / Codex", "Figma / Photoshop"],
   },
 ];
 
-const marqueeSkills = skillGroups.flatMap((group) => group.skills).slice(0, 8);
+const marqueeSkills = ["Python", "FastAPI", "PostgreSQL", "Cloudflare Workers / D1", "TypeScript", "React Native / Expo", "Drizzle ORM", "AI integrations"];
 
 const lifeMilestones = [
   {
-    period: "2018 - 2022",
+    period: "Aug 2018 - Nov 2022",
     type: "University",
     title: "Information Systems",
     place: "Can Tho University of Technology",
-    detail: "Engineer’s degree and the foundation for software, systems, and product thinking.",
+    detail: "Engineer’s Degree in Information Systems.",
   },
   {
-    period: "May - Aug 2023",
+    period: "Apr - Oct 2023",
     type: "Training",
-    title: "Full-Stack Java",
-    place: "KITS Vietnam",
-    detail: "Practical web development training with a strong React and frontend focus.",
+    title: "Full-Stack Java Development",
+    place: "KITS (Korea IT School), Vietnam",
+    detail: "Practical project training in full-stack development, including React.",
   },
   {
     period: "Aug 2023 - Nov 2025",
     type: "Full-time",
-    title: "Frontend Developer",
+    title: "Software Engineer",
     place: "Amoeba Co., Ltd",
-    detail: "Delivered 10+ responsive commerce and business applications from design to production.",
+    detail: "Built and maintained 10+ commerce and business web applications, reusable components, API integrations, and CMS customizations.",
   },
   {
-    period: "Dec 2025 - Jun 2026",
+    period: "Nov 2025 - Present",
     type: "Freelance",
-    title: "Frontend Developer",
-    place: "Amoeba Co., Ltd",
-    detail: "Continued building storefront UI, campaign pages, responsive journeys, and performance improvements.",
-  },
-  {
-    period: "Jul 2026 - Present",
-    type: "Independent",
-    title: "Full-stack Developer",
-    place: "GFT Career AI · NutriVision AI",
-    detail: "Building complete products across UI, APIs, databases, authentication, AI, tests, and deployment.",
+    title: "Software Engineer",
+    place: "Independent Projects",
+    detail: "Delivered GFT Career Connect AI and NutriVision AI end to end, alongside ongoing Andar commerce work.",
   },
 ];
 
@@ -91,16 +84,16 @@ export default function Home() {
 
       <section className="hero section-shell" id="home">
         <div className="hero-copy reveal">
-          <div className="availability"><span /> Available for frontend opportunities</div>
+          <div className="availability"><span /> Available for Software Engineer opportunities</div>
           <p className="eyebrow">Hello, I am <span className="nickname">Nomo</span></p>
           <h1>Nguyen Thai<br /><span>Nguyen.</span></h1>
-          <p className="hero-role">Frontend Developer <span>/ React &amp; TypeScript</span></p>
+          <p className="hero-role">Software Engineer <span>/ Web, Mobile &amp; AI Products</span></p>
           <p className="hero-summary">
-            I turn ambitious ideas and detailed designs into fast, responsive, production-ready interfaces - with nearly three years of experience across commerce, business systems, and AI products.
+            I build and ship complete software products across web, mobile, backend APIs, databases, and cloud services. Nearly three years delivering commerce, business, and AI applications from implementation through production.
           </p>
           <div className="hero-actions">
             <a className="button button-primary" href="#projects">Explore my work <span aria-hidden="true">→</span></a>
-            <a className="button button-ghost" href="/Nguyen-Thai-Nguyen-Frontend-Developer-CV.pdf" download>Download CV <span aria-hidden="true">↓</span></a>
+            <a className="button button-ghost" href="/Nguyen-Thai-Nguyen-Software-Engineer-CV.pdf" download>Download CV <span aria-hidden="true">↓</span></a>
           </div>
           <p className="code-link"><span>const</span> github = <a href="https://github.com/ThaiNguyen2k" target="_blank" rel="noreferrer">&quot;github.com/ThaiNguyen2k&quot;</a>;</p>
         </div>
@@ -122,17 +115,17 @@ export default function Home() {
                 <p><b>01</b> <em>const</em> developer = &#123;</p>
                 <p><b>02</b> &nbsp;name: <strong>&quot;Thai Nguyen&quot;</strong>,</p>
                 <p><b>03</b> &nbsp;nickname: <strong>&quot;Nomo&quot;</strong>,</p>
-                <p><b>04</b> &nbsp;focus: <strong>&quot;Frontend&quot;</strong>,</p>
-                <p><b>05</b> &nbsp;craft: [<strong>&quot;React&quot;</strong>, <strong>&quot;TS&quot;</strong>],</p>
+                <p><b>04</b> &nbsp;focus: <strong>&quot;Software Engineer&quot;</strong>,</p>
+                <p><b>05</b> &nbsp;craft: [<strong>&quot;APIs&quot;</strong>, <strong>&quot;Web&quot;</strong>, <strong>&quot;Mobile&quot;</strong>],</p>
                 <p><b>06</b> &nbsp;location: <strong>&quot;HCMC&quot;</strong>,</p>
                 <p><b>07</b> &nbsp;status: <span>true</span></p>
                 <p><b>08</b> &#125;;</p>
               </div>
             </div>
           </div>
-          <span className="float-tag tag-one">&lt;React /&gt;</span>
-          <span className="float-tag tag-two">TypeScript</span>
-          <span className="float-tag tag-three">UI.Engineer()</span>
+          <span className="float-tag tag-one">FastAPI()</span>
+          <span className="float-tag tag-two">PostgreSQL</span>
+          <span className="float-tag tag-three">Ship.Software()</span>
         </div>
       </section>
 
@@ -149,20 +142,20 @@ export default function Home() {
       <section className="section-shell content-section" id="about">
         <div className="section-heading">
           <p><span>01.</span> / about-me</p>
-          <h2>Code with purpose.<br /><span>Interfaces with character.</span></h2>
+          <h2>Engineering end to end.<br /><span>From data to experience.</span></h2>
         </div>
         <div className="about-grid">
           <div className="about-copy">
-            <p className="lead">Frontend-focused software engineer who cares equally about visual fidelity, maintainable code, and the small interaction details that make products feel finished.</p>
-            <p>I have delivered and maintained 10+ responsive applications, translating Figma and PSD designs into reusable React interfaces and commerce experiences. My work spans Cafe24, Odoo, WordPress, REST integrations, Cloudflare, and mobile experiences with Expo.</p>
-            <p>I also use AI as a disciplined engineering partner - for architecture exploration, refactoring, debugging, test generation, and documentation - then validate every output through diffs, browser checks, linting, builds, and automated tests.</p>
+            <p className="lead">Software engineer building complete products across responsive web, mobile, backend services, databases, and cloud platforms.</p>
+            <p>I have delivered 10+ commerce and business applications, pairing React and TypeScript with API integrations, data workflows, and production delivery. Recent work spans FastAPI, PostgreSQL, Cloudflare Workers and D1, Expo, and role-based access.</p>
+            <p>I build AI-enabled products from service design through user workflows, including data validation, privacy boundaries, migrations, automated checks, and deployment. My delivery practice includes reusable components, unit testing, linting, and production builds.</p>
             <a className="text-link" href="mailto:nguyendragon2000@gmail.com">Let&apos;s build something useful <span aria-hidden="true">↗</span></a>
           </div>
           <div className="metrics-grid">
             <article><strong>10<span>+</span></strong><p>web applications delivered</p></article>
-            <article><strong>03<span>yr</span></strong><p>professional experience</p></article>
-            <article><strong>12</strong><p>routes shipped in GFT Career AI</p></article>
-            <article><strong>02<span>+</span></strong><p>full-stack products delivered</p></article>
+            <article><strong>03<span>yr</span></strong><p>software engineering experience</p></article>
+            <article><strong>05</strong><p>intake sources in GFT Career AI</p></article>
+            <article><strong>02</strong><p>full-stack AI products delivered</p></article>
           </div>
         </div>
 
@@ -182,22 +175,19 @@ export default function Home() {
               <div className="source-tab">profile.md <span>×</span></div>
               <div className="source-lines">
                 <p><b>01</b> {"/**"}</p>
-                <p><b>02</b> * Frontend-focused engineer with nearly 3 years</p>
-                <p><b>03</b> * of production experience across commerce,</p>
-                <p><b>04</b> * business systems, mobile, cloud, and AI products.</p>
-                <p><b>05</b> *</p>
-                <p><b>06</b> * I translate Figma and PSD designs into</p>
-                <p><b>07</b> * responsive, maintainable React interfaces.</p>
-                <p><b>08</b> *</p>
-                <p><b>09</b> * Current focus: TypeScript, FastAPI, Workers,</p>
-                <p><b>10</b> * PostgreSQL/D1, tested AI-assisted delivery.</p>
-                <p><b>11</b> */</p>
+                <p><b>02</b> * Software Engineer with nearly 3 years building</p>
+                <p><b>03</b> * production web, mobile, and AI products.</p>
+                <p><b>04</b> * Full-stack delivery with FastAPI, PostgreSQL,</p>
+                <p><b>05</b> * Cloudflare, React, Expo, and TypeScript.</p>
+                <p><b>06</b> * Design secure workflows, APIs, and data layers.</p>
+                <p><b>07</b> * Ship with tests, reviews, and production builds.</p>
+                <p><b>08</b> {"*/"}</p>
               </div>
             </div>
             <div className="code-showcase">
               <p>{"//"} code snippet showcase:</p>
-              <article><span>GFT Career Connect AI</span><pre><code><em>const</em> pipeline = [<br />  &quot;triage&quot;, &quot;retrieval&quot;,<br />  &quot;confidence-gate&quot;,<br />  &quot;human-handoff&quot;<br />];</code></pre><small>64/64 tests · Cloudflare</small></article>
-              <article><span>NutriVision AI</span><pre><code><em>type</em> Stack = &#123;<br />  mobile: &quot;Expo&quot;,<br />  api: &quot;FastAPI&quot;,<br />  db: &quot;PostgreSQL&quot;<br />&#125;;</code></pre><small>full-stack · private repository</small></article>
+              <article><span>GFT Career Connect AI</span><pre><code><em>const</em> workflow = [<br />  &quot;intake&quot;, &quot;dedupe&quot;,<br />  &quot;route&quot;, &quot;retrieve&quot;,<br />  &quot;verify&quot;, &quot;handoff&quot;<br />];</code></pre><small>AI workflows · Cloudflare D1</small></article>
+              <article><span>NutriVision AI</span><pre><code><em>type</em> Stack = &#123;<br />  mobile: &quot;Expo&quot;,<br />  service: &quot;FastAPI&quot;,<br />  data: &quot;PostgreSQL&quot;<br />&#125;;</code></pre><small>full-stack mobile · API · data</small></article>
             </div>
           </div>
         </div>
@@ -217,7 +207,7 @@ export default function Home() {
                 <p><span>{String(index * 4 + 4).padStart(2, "0")}</span> ],</p>
               </div>
             ))}
-            <p><span>22</span> &#125;</p>
+            <p><span>26</span> &#125;</p>
           </div>
         </div>
       </section>
@@ -239,7 +229,7 @@ export default function Home() {
       <section className="section-shell content-section" id="experience">
         <div className="section-heading">
           <p><span>03.</span> / experience</p>
-          <h2>From design files<br /><span>to production systems.</span></h2>
+          <h2>Software engineering<br /><span>from idea to production.</span></h2>
         </div>
         <div className="life-timeline" aria-label="Education and professional journey">
           <div className="life-timeline-heading">
@@ -268,7 +258,7 @@ export default function Home() {
           <div className="contact-copy">
             <p className="eyebrow">04. / contact-me</p>
             <h2>Have a product in mind?<br /><span>Let&apos;s make it real.</span></h2>
-            <p>I am open to frontend roles and thoughtful product collaborations. Tell me about the challenge, the team, or the interface you want to bring to life.</p>
+          <p>I am open to Software Engineer roles and product collaborations across backend, full-stack, web, mobile, and AI systems. Tell me about the product, technical challenge, or team you are building.</p>
           </div>
           <ContactWorkspace />
         </div>

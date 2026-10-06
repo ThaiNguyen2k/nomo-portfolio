@@ -28,7 +28,7 @@ test("server-renders the complete Nomo portfolio", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /<title>Nomo - Nguyen Thai Nguyen \| Frontend Developer<\/title>/i);
+  assert.match(html, /<title>Nomo - Nguyen Thai Nguyen \| Software Engineer<\/title>/i);
   assert.match(html, /<meta(?=[^>]*name="viewport")(?=[^>]*minimum-scale=1)(?=[^>]*maximum-scale=1)(?=[^>]*user-scalable=no)[^>]*>/i);
   assert.match(html, /aria-label="Open navigation"/i);
   assert.match(html, /Interactive snake mini game/i);
@@ -55,15 +55,15 @@ test("server-renders the complete Nomo portfolio", async () => {
   assert.ok(html.indexOf('class="contact-section"') < html.indexOf('class="section-shell terminal-game"'));
   assert.ok(html.indexOf('class="section-shell terminal-game"') < html.indexOf('class="site-footer"'));
   assert.equal((html.match(/class="marquee-group"/g) ?? []).length, 2);
-  assert.match(html, /Code with purpose\./i);
+  assert.match(html, /Engineering end to end\./i);
   assert.match(html, /GFT Career Connect AI/i);
   assert.match(html, /Live professional experience timer/i);
   assert.match(html, /career\.runtime/i);
   assert.match(html, /Building products/i);
   assert.match(html, /life\.timeline/i);
-  assert.match(html, /May - Aug 2023/i);
+  assert.match(html, /Apr - Oct 2023/i);
   assert.match(html, /Can Tho University of Technology/i);
-  assert.match(html, /Building complete products across UI, APIs, databases/i);
+  assert.match(html, /Software engineer building complete products across responsive web/i);
   assert.match(html, /Filter projects by technology/i);
   assert.match(html, /message\.preview\.js/i);
   assert.match(html, /send-message/i);
